@@ -10,6 +10,7 @@ import {
   Button,
   Image,
   Linking,
+  ImageBackground,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -21,6 +22,7 @@ import {getUserBills, getUserId} from '../../utils/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CallHospital from '../callHosp';
 import {DataTable} from 'react-native-paper';
+import PageLogo from '../pageLogo';
 
 interface BillingData {
   amount: string;
@@ -31,15 +33,20 @@ interface BillingData {
 
 const Billing = ({route}) => {
   const {type, hospName, logo, hospitalId, phoneNumber} = route.params;
+  const image = require('./../../assets/logo/background.jpeg');
 
   let typeUpper = 'CURRENT';
   if (type == 'history') {
     typeUpper = 'HISTORY';
   }
+  if (type == 'opd') {
+    typeUpper = 'CLINIC BILLS (OPD)';
+  }
 
   const [userBillingList, setUserBillingList] = useState<BillingData[]>();
   const [loggedInUserId, setLoggedInUserId] = useState(0);
 
+  console.log('userBillingList----->', userBillingList);
   let billingData: any = [];
 
   const getUserDetails = async () => {
@@ -55,11 +62,15 @@ const Billing = ({route}) => {
   useEffect(() => {
     const userBillingData = async (userId: any) => {
       const userReports = await getUserBills(userId, hospitalId);
+
       if (type == 'current') {
         billingData = userReports.data.current;
+      } else if (type == 'opd') {
+        billingData = userReports.data.opd;
       } else {
         billingData = userReports.data.history;
       }
+
       setUserBillingList(billingData);
       return billingData;
     };
@@ -70,39 +81,42 @@ const Billing = ({route}) => {
   }, [loggedInUserId]);
 
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View style={{flexDirection: 'row'}}>
-          <MaterialCommunityIcons
-            onPress={() =>
-              type == 'current'
-                ? navigate(ScreenNames.Current)
-                : navigate(ScreenNames.History)
-            }
-            name="keyboard-backspace"
-            color={Colors.black}
-            size={30}
-            style={{marginTop: 18, marginLeft: 10}}
-          />
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-              margin: 20,
-            }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{typeUpper}</Text>
-          </View>
-        </View>
+    <ImageBackground
+      source={image}
+      style={{flex: 1, width: null, height: null}}>
+      <PageLogo />
 
+      <View style={{flexDirection: 'row'}}>
+        <MaterialCommunityIcons
+          onPress={() =>
+            type == 'current'
+              ? navigate(ScreenNames.Current)
+              : type == 'history'
+              ? navigate(ScreenNames.HospitalSelection)
+              : navigate(ScreenNames.HospitalSelectionOpd)
+          }
+          name="arrow-left-circle"
+          color="#D3ECF9"
+          size={30}
+          style={{marginTop: 18, marginLeft: 10}}
+        />
         <View
           style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}
-        />
+            flex: 1,
+            margin: 20,
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
+            {typeUpper}
+          </Text>
+        </View>
+      </View>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        {/* <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}
+          /> */}
 
         <View
           style={{
@@ -110,105 +124,111 @@ const Billing = ({route}) => {
             flexDirection: 'row',
             marginTop: 10,
             marginBottom: 10,
+            marginLeft: 20,
             padding: '2%',
-            justifyContent: 'center',
-            alignItems: 'center',
           }}>
           <Image
             source={{uri: logo}}
             style={styles.logoStyle}
             resizeMode="contain"
           />
-          <Text style={{margin: 10, fontSize: 30, fontWeight: 'bold'}}>
+          <Text
+            style={{
+              margin: 10,
+              fontSize: 30,
+              fontWeight: 'bold',
+              color: '#D3ECF9',
+            }}>
             {hospName}
           </Text>
 
           <CallHospital phonenumber={phoneNumber} />
         </View>
 
-        <View
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}
-        />
+        {/* <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}
+          /> */}
 
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignContent: 'center',
-            alignItems: 'center',
             margin: 20,
           }}>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>REPORTS</Text>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
+            BILLS
+          </Text>
         </View>
 
         <View />
 
-        <DataTable style={{paddingLeft: 10, paddingRight: 10, borderWidth: 2}}>
-          <DataTable.Header
-            style={{paddingLeft: 50, paddingRight: 50, borderBottomWidth: 2}}>
-            <DataTable.Title>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Date</Text>
-            </DataTable.Title>
-            <DataTable.Title numeric>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Bill </Text>
-            </DataTable.Title>
-          </DataTable.Header>
+        {userBillingList?.length != 0 && userBillingList !== undefined ? (
+          <View style={{paddingLeft: 20, paddingRight: 20}}>
+            <DataTable style={{borderWidth: 2, borderColor: '#0A4A6B'}}>
+              <DataTable.Header
+                style={{
+                  borderBottomWidth: 2,
+                  backgroundColor: '#C7E7F8',
+                }}>
+                <DataTable.Title>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#228EC7',
+                    }}>
+                    Date
+                  </Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#228EC7',
+                    }}>
+                    Bill{' '}
+                  </Text>
+                </DataTable.Title>
+              </DataTable.Header>
 
-          {userBillingList?.map((u, i) => {
-            return (
-              <View key={i}>
-                <DataTable.Row style={{paddingLeft: 30, paddingRight: 50}}>
-                  <DataTable.Cell>{u.billing_time}</DataTable.Cell>
-                  <DataTable.Cell numeric>
-                    <Text
-                      style={{color: 'blue', marginLeft: '30%'}}
-                      onPress={() => Linking.openURL(u.file_url)}>
-                      {u.bill_file_name}
-                    </Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-              </View>
-            );
-          })}
-        </DataTable>
-
-        {/* <Card>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{marginLeft: '10%'}}>Date</Text>
-            <Text style={{marginLeft: '50%'}}>Bill</Text>
+              {userBillingList?.map((u, i) => {
+                return (
+                  <View key={i}>
+                    <DataTable.Row
+                      style={{
+                        backgroundColor: '#67C2F1',
+                      }}>
+                      <DataTable.Cell>{u.billing_time}</DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text
+                          style={{color: 'blue'}}
+                          onPress={() => Linking.openURL(u.file_url)}>
+                          {u.bill_file_name}
+                        </Text>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  </View>
+                );
+              })}
+            </DataTable>
           </View>
-          <View
+        ) : (
+          <Text
             style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-              marginTop: 10,
-            }}
-          />
-          <Card.Divider />
-          {userBillingList?.length == 0 && (
-          <View>
-            <Text>No Bills Uploaded</Text>
-          </View>
-          )}
-          {userBillingList?.map((u, i) => {
-            return (
-              <View key={i} style={{flexDirection: 'row', marginTop: 5}}>
-                <Text>{u.billing_time}</Text>
-
-                <Text
-                  style={{color: 'blue', marginLeft: '30%'}}
-                  onPress={() => Linking.openURL(u.file_url)}>
-                  {u.bill_file_name}
-                </Text>
-              </View>
-            );
-          })}
-        </Card> */}
+              color: '#D3ECF9',
+              fontSize: 18,
+              marginTop: 20,
+              alignSelf: 'center',
+              textAlign: 'center',
+            }}>
+            No Updates Uploaded
+          </Text>
+        )}
       </ScrollView>
-    </SafeAreaView>
+    </ImageBackground>
   );
 };
 

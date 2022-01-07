@@ -10,10 +10,9 @@ import RNRestart from 'react-native-restart';
 import Call from 'react-native-phone-call';
 
 const Logout: React.FC = (props: any) => {
-
-  console.log('props in call', props.phonenumber)
   const navigation = useNavigation();
 
+  console.log('in call hospital', props.phonenumber);
   const onLogout = async () => {
     const res = await logout();
     if (res.is_success) {
@@ -33,18 +32,17 @@ const Logout: React.FC = (props: any) => {
   };
 
   return (
-    <Text>
-   {'   '}
+    <Text style={{marginTop: 15}}>
+      {'   '}
       <MaterialCommunityIcons
         // onPress={() => navigation.navigate(ScreenNames.HomeScreen)}
         onPress={() => onCall()}
         name="phone"
-        color={Colors.black}
+        color="#D3ECF9"
         size={30}
-        // style={{marginTop: 14}}
+        // style={{backgroundColor: 'red'}}
       />
-     </Text>
-    
+    </Text>
   );
 };
 

@@ -144,7 +144,7 @@ export const getUserReports = async (
       user_id: userId,
       // hospital_id: hospitalId,
     };
-    if (type == 'history') {
+    if (type != 'current') {
       params = {
         user_id: userId,
         hospital_id: hospitalId,

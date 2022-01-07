@@ -8,6 +8,7 @@ import {
   View,
   Button,
   Image,
+  ImageBackground,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {navigate} from '../../navigator/NavigationService';
@@ -18,6 +19,7 @@ import CallHospital from '../callHosp';
 import _ from 'lodash';
 import {DataTable} from 'react-native-paper';
 import Modal from 'react-native-modal';
+import PageLogo from '../pageLogo';
 
 interface UpdateData {
   update_time: string;
@@ -28,6 +30,7 @@ interface UpdateData {
 
 const Updates = ({route}) => {
   const {type, hospName, logo, hospitalId, phoneNumber} = route.params;
+  const image = require('./../../assets/logo/background.jpeg');
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState(false);
@@ -44,6 +47,9 @@ const Updates = ({route}) => {
   let typeUpper = 'CURRENT';
   if (type == 'history') {
     typeUpper = 'HISTORY';
+  }
+  if (type == 'opd') {
+    typeUpper = 'CLINIC UPDATES (OPD) ';
   }
 
   const [userUpdatesList, setUserUpdatesList] = useState<UpdateData[]>();
@@ -63,8 +69,12 @@ const Updates = ({route}) => {
   useEffect(() => {
     const userUpdatesData = async (userId: any) => {
       const userUpdates = await getUserUpdates(userId, hospitalId);
+      console.log('userUpdates--->', userUpdates);
+
       if (type == 'current') {
         UpdatesData = userUpdates.data.current;
+      } else if (type == 'opd') {
+        UpdatesData = userUpdates.data.opd;
       } else {
         UpdatesData = userUpdates.data.history;
       }
@@ -78,40 +88,44 @@ const Updates = ({route}) => {
   }, [loggedInUserId]);
 
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View style={{flexDirection: 'row'}}>
-          <MaterialCommunityIcons
-            onPress={() =>
-              type == 'current'
-                ? navigate(ScreenNames.Current)
-                : navigate(ScreenNames.History)
-            }
-            name="keyboard-backspace"
-            color={Colors.black}
-            size={30}
-            style={{marginTop: 18, marginLeft: 10}}
-          />
+    <ImageBackground
+      source={image}
+      style={{flex: 1, width: null, height: null}}>
+      <PageLogo />
 
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-              margin: 20,
-            }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{typeUpper}</Text>
-          </View>
-        </View>
+      <View style={{flexDirection: 'row'}}>
+        <MaterialCommunityIcons
+          onPress={() =>
+            type == 'current'
+              ? navigate(ScreenNames.Current)
+              : type == 'history'
+              ? navigate(ScreenNames.HospitalSelection)
+              : navigate(ScreenNames.HospitalSelectionOpd)
+          }
+          name="arrow-left-circle"
+          color="#D3ECF9"
+          size={30}
+          style={{marginTop: 18, marginLeft: 10}}
+        />
 
         <View
           style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}
-        />
+            flex: 1,
+            margin: 20,
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
+            {typeUpper}
+          </Text>
+        </View>
+      </View>
+
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        {/* <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}
+          /> */}
 
         <View
           style={{
@@ -119,86 +133,135 @@ const Updates = ({route}) => {
             flexDirection: 'row',
             marginTop: 10,
             marginBottom: 10,
+            marginLeft: 20,
             padding: '2%',
-            justifyContent: 'center',
-            alignItems: 'center',
           }}>
           <Image
             source={{uri: logo}}
             style={styles.logoStyle}
             resizeMode="contain"
           />
-          <Text style={{margin: 10, fontSize: 30, fontWeight: 'bold'}}>
+          <Text
+            style={{
+              margin: 10,
+              fontSize: 30,
+              fontWeight: 'bold',
+              color: '#D3ECF9',
+            }}>
             {hospName}
           </Text>
 
           <CallHospital phonenumber={phoneNumber} />
         </View>
 
-        <View
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}
-        />
+        {/* <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 1,
+            }}
+          /> */}
 
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignContent: 'center',
-            alignItems: 'center',
+
             margin: 20,
           }}>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>UPDATES</Text>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
+            UPDATES
+          </Text>
         </View>
 
-        <DataTable style={{paddingLeft: 10, paddingRight: 10, borderWidth: 2}}>
-          <DataTable.Header
-            style={{paddingLeft: 0, paddingRight: 0, borderBottomWidth: 2}}>
-            <DataTable.Title>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Date</Text>
-            </DataTable.Title>
+        {userUpdatesList?.length != 0 && userUpdatesList !== undefined ? (
+          <View style={{paddingLeft: 20, paddingRight: 20}}>
+            <DataTable style={{borderWidth: 2, borderColor: '#0A4A6B'}}>
+              <DataTable.Header
+                style={{
+                  // paddingLeft: 50,
+                  // paddingRight: 30,
+                  borderBottomWidth: 2,
+                  backgroundColor: '#C7E7F8',
+                }}>
+                <DataTable.Title>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#228EC7',
+                    }}>
+                    Date
+                  </Text>
+                </DataTable.Title>
 
-            <DataTable.Title numeric>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Updates </Text>
-            </DataTable.Title>
-            <DataTable.Title numeric>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Dr. Name </Text>
-            </DataTable.Title>
-          </DataTable.Header>
+                <DataTable.Title>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#228EC7',
+                    }}>
+                    Updates{' '}
+                  </Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#228EC7',
+                    }}>
+                    Doctor{' '}
+                  </Text>
+                </DataTable.Title>
+              </DataTable.Header>
 
-          {userUpdatesList?.map((u, i) => {
-            return (
-              <View key={i}>
-                <DataTable.Row style={{paddingLeft: 0, paddingRight: 0}}>
-                  <DataTable.Cell>{u.datetime}</DataTable.Cell>
+              {userUpdatesList?.map((u, i) => {
+                return (
+                  <View key={i}>
+                    <DataTable.Row
+                      style={{
+                        backgroundColor: '#67C2F1',
+                      }}>
+                      <DataTable.Cell>{u.datetime}</DataTable.Cell>
 
-                  <DataTable.Cell numeric>
-                    <Text
-                      style={{color: 'blue'}}
-                      onPress={() => toggleModal1(u.health_update)}>
-                      <Modal isVisible={isModalVisible}>
-                        <View style={{flex: 1, marginTop: '50%'}}>
-                          <Button title={modalText} onPress={toggleModal} />
-                          <Button
-                            title="Close"
-                            onPress={toggleModal}
-                            color="red"
-                          />
-                        </View>
-                      </Modal>
-                      {u.health_update}
-                    </Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>{u.dr_name}</DataTable.Cell>
-                </DataTable.Row>
-              </View>
-            );
-          })}
-        </DataTable>
+                      <DataTable.Cell>
+                        <Text
+                          style={{color: 'blue'}}
+                          onPress={() => toggleModal1(u.health_update)}>
+                          <Modal isVisible={isModalVisible}>
+                            <View style={{flex: 1, marginTop: '50%'}}>
+                              <Button title={modalText} onPress={toggleModal} />
+                              <Button
+                                title="Close"
+                                onPress={toggleModal}
+                                color="red"
+                              />
+                            </View>
+                          </Modal>
+                          {u.health_update}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>{u.dr_name}</DataTable.Cell>
+                    </DataTable.Row>
+                  </View>
+                );
+              })}
+            </DataTable>
+          </View>
+        ) : (
+          <Text
+            style={{
+              color: '#D3ECF9',
+              fontSize: 18,
+              marginTop: 20,
+              alignSelf: 'center',
+              textAlign: 'center',
+            }}>
+            No Updates Uploaded
+          </Text>
+        )}
       </ScrollView>
-    </SafeAreaView>
+    </ImageBackground>
   );
 };
 

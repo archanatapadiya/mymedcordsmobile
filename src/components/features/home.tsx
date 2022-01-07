@@ -25,7 +25,8 @@ import Carousel from '../carousel';
 import {navigate, push} from '../../navigator/NavigationService';
 import {API, ScreenNames} from '../../navigator/constants';
 import {getUserName, getUserId, fetchUserDetails} from '../../utils/api';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import PageLogo from '../pageLogo';
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -39,7 +40,8 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const Logo = require('./../../assets/logo/medCordsIcon.jpeg');
+  const Logo = require('./../../assets/logo/MyMedCordsTransparent.png');
+  const image = require('./../../assets/logo/background.jpeg');
 
   const getUserDetails = async () => {
     const userId = await getUserId();
@@ -62,16 +64,6 @@ const App = () => {
       userloggedData = userReports?.data;
       setUserData(userloggedData);
     }
-
-    // let userloggedData = userReports?.data;
-
-    // if (!userloggedData) {
-    //   userReports = await fetchUserDetails(loggedInUserId);
-    //   userloggedData = userReports?.data;
-    // }
-    // if (userloggedData) {
-    //   setUserData(userloggedData);
-    // }
     return userloggedData;
   };
 
@@ -82,48 +74,119 @@ const App = () => {
   }, [loggedInUserId]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <ImageBackground
+      source={image}
+      style={{flex: 1, width: null, height: null}}>
+      <PageLogo />
 
-      <Image source={Logo} style={styles.logoStyle} resizeMode="contain" />
-
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View
           style={{
             marginTop: '10%',
           }}>
-          <View style={styles.buttonView}>
-            <Button
-              title="CURRENT"
-              onPress={() =>
-                navigate(ScreenNames.Current, {userData: userData})
-              }
-              disabled={!userData?.is_admit}
-            />
+          <View style={{marginTop: '5%'}}>
+            <Text style={styles.sectionHeading}>CLINIC RECORDS (OPD)</Text>
           </View>
 
           <View style={styles.buttonView}>
-            <Button
-              title="HISTORY"
+            <MaterialCommunityIcons
+              onPress={() =>
+                navigate(ScreenNames.HospitalSelectionOpd, {
+                  userData: userData,
+                })
+              }
+              name="arrow-right-circle"
+              color="#D3ECF9"
+              size={40}
+              style={{marginLeft: '8%'}}
+            />
+            <Text
+              style={{
+                marginTop: '2%',
+                marginLeft: '5%',
+                fontWeight: 'bold',
+                fontSize: 16,
+                color: '#D3ECF9',
+              }}>
+              View
+            </Text>
+          </View>
+
+          <View style={{marginTop: '10%'}}>
+            <Text style={styles.sectionHeading}>HOSPITAL RECORDS (IPD)</Text>
+          </View>
+
+          {userData?.is_admit && (
+            <View style={styles.buttonView}>
+              <MaterialCommunityIcons
+                onPress={() =>
+                  userData?.is_admit
+                    ? navigate(ScreenNames.Current, {userData: userData})
+                    : console.log('not a current user')
+                }
+                name="arrow-right-circle"
+                color="#D3ECF9"
+                size={40}
+                style={{marginLeft: '8%'}}
+              />
+              <Text
+                style={{
+                  marginTop: '2%',
+                  marginLeft: '5%',
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: '#D3ECF9',
+                }}>
+                Current
+              </Text>
+
+              {/* <Button
+                title="CURRENT"
+                onPress={() =>
+                  navigate(ScreenNames.Current, {userData: userData})
+                }
+                disabled={!userData?.is_admit}
+              /> */}
+            </View>
+          )}
+
+          <View style={styles.buttonView}>
+            <MaterialCommunityIcons
               onPress={() =>
                 navigate(ScreenNames.HospitalSelection, {userData: userData})
               }
+              name="arrow-right-circle"
+              color="#D3ECF9"
+              size={40}
+              style={{marginLeft: '8%'}}
             />
-          </View>
-
-          <View style={styles.buttonView}>
-            <Button
-              title="ACCOUNT"
-              onPress={() =>
-                navigate(ScreenNames.AccountScreen, {userData: userData})
-              }
-            />
+            <Text
+              style={{
+                marginTop: '2%',
+                marginLeft: '5%',
+                fontWeight: 'bold',
+                fontSize: 16,
+                color: '#D3ECF9',
+              }}>
+              History
+            </Text>
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+
+      <View
+        style={{
+          width: '100%',
+          height: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: 0,
+        }}>
+        <Text style={{color: '#D3ECF9'}}>v1.0 Beta</Text>
+        <Text style={{color: '#D3ECF9'}}>MEDCLINIQ</Text>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -135,6 +198,15 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
+  },
+  sectionHeading: {
+    color: '#D3ECF9',
+    fontSize: 18,
+    // textAlign: 'center',
+    // justifyContent: 'center',
+    // alignSelf: 'center',
+    fontWeight: 'bold',
+    marginLeft: '10%',
   },
   sectionDescription: {
     marginTop: 8,
@@ -151,17 +223,20 @@ const styles = StyleSheet.create({
   },
 
   logoStyle: {
-    alignSelf: 'center',
+    backgroundColor: 'transparent',
+    alignSelf: 'flex-end',
     borderWidth: 1,
     padding: '2%',
     borderRadius: 10,
-    width: 120,
-    height: 90,
+    width: 90,
+    height: 70,
     marginTop: 20,
+    marginRight: 20,
   },
 
   buttonView: {
-    // flex: 1,
+    flex: 1,
+    flexDirection: 'row',
     // justifyContent: 'center',
     // alignItems: 'center',
     padding: 10,

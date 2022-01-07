@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native'
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // backgroundColor: '#E5E5E5',
     flexGrow: 1,
-    paddingTop: '5%',
     height: '100%',
-    marginTop: '5%'
+    marginTop: '5%',
+
+    flex: 1,
   },
   container: {
     flexGrow: 1,
@@ -14,14 +14,37 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     marginVertical: '1%',
-    height: 50,
-    borderRadius: 10,
+    height: 40,
+    width: 200,
     backgroundColor: '#ffffff',
     borderWidth: 1,
     borderColor: '#999999',
     padding: 10,
     marginLeft: '2%',
     marginRight: '2%',
+  },
+  inputLabelPass: {
+    flex: 1,
+    marginVertical: '1%',
+    height: 40,
+    width: 200,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#999999',
+    padding: 10,
+    marginLeft: '2%',
+    marginRight: '2%',
+  },
+  inputLabel1: {
+    alignContent: 'center',
+    alignSelf: 'center',
+    marginVertical: '1%',
+    height: 40,
+    width: 200,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#999999',
+    padding: 10,
   },
   formErrorMessage: {
     color: '#E90707',
@@ -34,12 +57,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignSelf: 'stretch',
     alignItems: 'flex-end',
-    marginRight: '2%',
+    marginRight: '18%',
+    marginTop: '4%',
   },
   forgotTextStyle: {
     fontSize: 14,
     lineHeight: 16,
-    color: '#A2A2A2',
+    color: '#D3ECF9',
     textDecorationLine: 'underline',
   },
 
@@ -85,13 +109,49 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
 
+  nextButtonContainer1: {
+    alignSelf: 'center',
+    backgroundColor: '#85CFF5',
+    borderRadius: 10,
+    height: 45,
+    borderColor: '#85CFF5',
+    borderWidth: 1,
+    marginVertical: '4%',
+  },
+  nextButtonText1: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: 'white',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    lineHeight: 25,
+  },
+
   privacyTextStyle: {
     width: 250,
     fontSize: 14,
-    lineHeight: 16,
-    color: '#A2A2A2',
+    // lineHeight: 16,
+    color: '#D3ECF9',
     textAlign: 'center',
-    marginVertical: '3%',
+    marginVertical: '24%',
+    alignSelf: 'center',
+  },
+
+  headingTextStyle: {
+    fontSize: 26,
+    color: '#D3ECF9',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+
+  secondaryTextStyle: {
+    width: 250,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#D3ECF9',
+    textAlign: 'center',
     alignSelf: 'center',
   },
 
@@ -128,7 +188,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     bottom: '1%',
   },
-  
-})
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+  },
+});
 
-export default styles
+export default styles;

@@ -27,6 +27,7 @@ import {ScreenNames} from '../../navigator/constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getHospitalList, getUserId} from '../../utils/api';
 import CallHospital from '../callHosp';
+import PageLogo from '../pageLogo';
 
 interface HospitalData {
   hospital_id: number;
@@ -38,14 +39,17 @@ const Current = ({route}) => {
   const {userData} = route.params;
   const [hospitalList, setHospitalList] = useState<HospitalData[]>();
   const [loggedInUserId, setLoggedInUserId] = useState(0);
-  const [currentHospital, setCurrentHospital] = useState({});
-  const [currentHospitalPhonenumber, setCurrentHospitalPhonenumber] =
-    useState();
+
+  const image = require('./../../assets/logo/background.jpeg');
+
+  console.log('userData--->', userData);
 
   let hospitalListData: any = [];
 
   const userHospitalData = async (userId: any) => {
     const hospData = await getHospitalList(userId);
+    console.log('hospData--->', hospData);
+
     hospitalListData = hospData.data;
     setHospitalList(hospitalListData);
     return hospitalListData;
@@ -67,128 +71,113 @@ const Current = ({route}) => {
     }
   }, [loggedInUserId]);
 
-  useEffect(() => {
-    for (let i = 0; i <= hospitalList?.length; i++) {
-      if (hospitalList[i]?.name == userData?.Hospital_name) {
-        setCurrentHospital(hospitalList[i]);
-        setCurrentHospitalPhonenumber(hospitalList[i]?.phone_number);
-      }
-    }
-  }, [hospitalList]);
-
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View style={{flexDirection: 'row'}}>
-          <MaterialCommunityIcons
-            onPress={() => navigate(ScreenNames.HomeScreen)}
-            name="keyboard-backspace"
-            color={Colors.black}
-            size={30}
-            style={{marginTop: 18, marginLeft: 10}}
-          />
+    <ImageBackground
+      source={image}
+      style={{flex: 1, width: null, height: null}}>
+      <SafeAreaView>
+        <StatusBar />
+        <PageLogo />
+
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <View style={{flexDirection: 'row'}}>
+            <MaterialCommunityIcons
+              onPress={() => navigate(ScreenNames.HomeScreen)}
+              name="arrow-left-circle"
+              color="#D3ECF9"
+              size={30}
+              style={{marginTop: 18, marginLeft: 10}}
+            />
+
+            <View
+              style={{
+                flex: 1,
+                margin: 20,
+              }}>
+              <Text
+                style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
+                CURRENT ADMISSION RECORDS
+              </Text>
+            </View>
+          </View>
 
           <View
             style={{
               flex: 1,
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-              margin: 20,
+              flexDirection: 'row',
+              marginTop: 10,
+              marginBottom: 10,
+              marginLeft: 20,
+              padding: '2%',
             }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>CURRENT</Text>
+            <Image
+              source={{uri: userData.Hospital_logo}}
+              style={styles.logoStyle}
+              resizeMode="contain"
+            />
+            <Text
+              style={{
+                margin: 10,
+                fontSize: 30,
+                fontWeight: 'bold',
+                color: '#D3ECF9',
+              }}>
+              {userData.Hospital_name}
+            </Text>
+            <CallHospital phonenumber={userData.Hospital_phonenumber} />
           </View>
-        </View>
 
-        <View
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}
-        />
+          {/* <HospitalHeader /> */}
 
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: 10,
-            marginBottom: 10,
-            padding: '2%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image
-            source={{uri: currentHospital.logo}}
-            style={styles.logoStyle}
-            resizeMode="contain"
-          />
-          <Text style={{margin: 10, fontSize: 30, fontWeight: 'bold'}}>
-            {userData.Hospital_name}
-          </Text>
-          <CallHospital phonenumber={currentHospitalPhonenumber} />
-        </View>
-
-        {/* <HospitalHeader /> */}
-
-        <View
-          style={{
-            marginTop: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignContent: 'center',
-          }}>
-          <View style={styles.buttonView}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              // marginTop: 10,
+              // marginBottom: 10,
+              // padding: '2%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <Button
-              title="REPORTS"
+              title="View Reports"
               onPress={() =>
                 navigate(ScreenNames.ReportsScreen, {
                   type: 'current',
                   hospName: userData.Hospital_name,
                   logo: userData.Hospital_logo,
-                  phoneNumber: currentHospital.phone_number,
+                  phoneNumber: userData.Hospital_phonenumber,
                 })
               }
             />
-          </View>
-
-          <View style={styles.buttonView}>
+            <Text>{'\n'}</Text>
             <Button
-              title="UPDATES"
+              title="View Updates"
               onPress={() =>
                 navigate(ScreenNames.UpdatesScreen, {
                   type: 'current',
                   hospName: userData.Hospital_name,
                   logo: userData.Hospital_logo,
-                  phoneNumber: currentHospital.phone_number,
+                  phoneNumber: userData.Hospital_phonenumber,
                 })
               }
             />
-          </View>
-
-          <View style={styles.buttonView}>
+            <Text>{'\n'}</Text>
             <Button
-              title="BILLING"
+              title="View Billing"
               onPress={() =>
                 navigate(ScreenNames.BillingScreen, {
                   type: 'current',
                   hospName: userData.Hospital_name,
                   logo: userData.Hospital_logo,
-                  phoneNumber: currentHospital.phone_number,
+                  phoneNumber: userData.Hospital_phonenumber,
                 })
               }
             />
           </View>
-
-          <View style={styles.buttonView}>
-            <Button
-              title="INFORMATION"
-              onPress={() => navigate(ScreenNames.InfoScreen)}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 

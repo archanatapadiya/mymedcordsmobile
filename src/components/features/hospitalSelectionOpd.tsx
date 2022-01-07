@@ -39,18 +39,21 @@ const Current = ({route}) => {
   // const {userData} = route.params;
 
   const [hospitalList, setHospitalList] = useState<HospitalData[]>();
-  const [loggedInUserId, setLoggedInUserId] = useState(0);
 
   const [hospitalListOpd, setHospitalListOpd] = useState<HospitalData[]>();
   const [hospitalListIpd, setHospitalListIpd] = useState<HospitalData[]>();
 
+  const [loggedInUserId, setLoggedInUserId] = useState(0);
   const image = require('./../../assets/logo/background.jpeg');
+  const Logo = require('./../../assets/logo/MyMedCordsTransparent.png');
+
+  console.log('hospitalList', hospitalList?.length);
   let hospitalListData: any = [];
 
   const userHospitalData = async (userId: any) => {
     const hospData = await getHospitalList(userId);
-    console.log(',hospData', hospData);
     hospitalListData = hospData.data;
+    console.log('hospitalListData--->', hospitalListData);
     // setHospitalList(hospitalListData);
     setHospitalListOpd(hospitalListData.opd);
     setHospitalListIpd(hospitalListData.ipd);
@@ -79,7 +82,6 @@ const Current = ({route}) => {
       source={image}
       style={{flex: 1, width: null, height: null}}>
       <PageLogo />
-
       <View style={{flexDirection: 'row'}}>
         <MaterialCommunityIcons
           onPress={() => navigate(ScreenNames.HomeScreen)}
@@ -92,104 +94,101 @@ const Current = ({route}) => {
         <View
           style={{
             flex: 1,
+            // justifyContent: 'center',
+            // alignContent: 'center',
+            // alignItems: 'center',
             margin: 20,
           }}>
           <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
-            HOSPITAL RECORDS
+            CLINIC RECORDS
           </Text>
         </View>
       </View>
-
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {hospitalListIpd?.filter(name => name.hospital_type != 1).length !=
-        0 ? (
-          hospitalListIpd
-            ?.filter(name => name.hospital_type != 1)
-            .map((u, i) => {
-              console.log('hospitalList in loop', hospitalList);
-              return (
-                // u.name != userData?.Hospital_name ? (
-                <View style={{marginTop: 10, marginBottom: 10}}>
-                  <View
+        {hospitalListOpd?.length != 0 ? (
+          hospitalListOpd?.map((u, i) => {
+            return (
+              // u.name != userData?.Hospital_name ? (
+              <View style={{marginTop: 10, marginBottom: 10}}>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    marginTop: 10,
+                    marginBottom: 10,
+                    marginLeft: 20,
+                    padding: '2%',
+                  }}>
+                  <Image
+                    source={{uri: u.logo}}
+                    style={styles.logoStyle}
+                    resizeMode="contain"
+                  />
+                  <Text
                     style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      marginTop: 10,
-                      marginBottom: 10,
-                      marginLeft: 20,
-                      padding: '2%',
+                      margin: 10,
+                      fontSize: 25,
+                      fontWeight: 'bold',
+                      color: '#D3ECF9',
                     }}>
-                    <Image
-                      source={{uri: u.logo}}
-                      style={styles.logoStyle}
-                      resizeMode="contain"
-                    />
-                    <Text
-                      style={{
-                        margin: 10,
-                        fontSize: 25,
-                        fontWeight: 'bold',
-                        color: '#D3ECF9',
-                      }}>
-                      {u.name}
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      // marginTop: 10,
-                      // marginBottom: 10,
-                      // padding: '2%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Button
-                      title="VIEW REPORTS"
-                      onPress={() =>
-                        navigate(ScreenNames.ReportsScreen, {
-                          type: 'history',
-                          hospName: u.name,
-                          logo: u.logo,
-                          hospitalId: u.pk,
-                          phoneNumber: u.phone_number,
-                        })
-                      }
-                    />
-
-                    <Text>{'\n'}</Text>
-                    <Button
-                      title="VIEW NOTES"
-                      onPress={() =>
-                        navigate(ScreenNames.UpdatesScreen, {
-                          type: 'history',
-                          hospName: u.name,
-                          logo: u.logo,
-                          hospitalId: u.pk,
-                          phoneNumber: u.phone_number,
-                        })
-                      }
-                    />
-
-                    <Text>{'\n'}</Text>
-
-                    <Button
-                      title="VIEW BILLING"
-                      onPress={() =>
-                        navigate(ScreenNames.BillingScreen, {
-                          type: 'history',
-                          hospName: u.name,
-                          logo: u.logo,
-                          hospitalId: u.pk,
-                          phoneNumber: u.phone_number,
-                        })
-                      }
-                    />
-                  </View>
+                    {u.name}
+                  </Text>
                 </View>
-              );
-            })
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    // marginTop: 10,
+                    // marginBottom: 10,
+                    // padding: '2%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Button
+                    title="VIEW REPORTS"
+                    onPress={() =>
+                      navigate(ScreenNames.ReportsScreen, {
+                        type: 'opd',
+                        hospName: u.name,
+                        logo: u.logo,
+                        hospitalId: u.pk,
+                        phoneNumber: u.phone_number,
+                      })
+                    }
+                  />
+
+                  <Text>{'\n'}</Text>
+                  <Button
+                    title="VIEW NOTES"
+                    onPress={() =>
+                      navigate(ScreenNames.UpdatesScreen, {
+                        type: 'opd',
+                        hospName: u.name,
+                        logo: u.logo,
+                        hospitalId: u.pk,
+                        phoneNumber: u.phone_number,
+                      })
+                    }
+                  />
+
+                  <Text>{'\n'}</Text>
+
+                  <Button
+                    title="VIEW BILLING"
+                    onPress={() =>
+                      navigate(ScreenNames.BillingScreen, {
+                        type: 'opd',
+                        hospName: u.name,
+                        logo: u.logo,
+                        hospitalId: u.pk,
+                        phoneNumber: u.phone_number,
+                      })
+                    }
+                  />
+                </View>
+              </View>
+            );
+          })
         ) : (
           <Text
             style={{

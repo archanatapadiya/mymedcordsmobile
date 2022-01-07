@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
 //  import type {Node} from 'react';
-import { View,StyleSheet, Text, TouchableOpacity, TextInput, Alert, Image, SafeAreaView, ScrollView, KeyboardAvoidingView} from 'react-native';
+import { View,StyleSheet, Text, ImageBackground, TouchableOpacity, TextInput, Alert, Image, SafeAreaView, ScrollView, KeyboardAvoidingView} from 'react-native';
 import { Formik } from 'formik';
 import { Button, Snackbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +23,7 @@ import {ScreenNames} from '../../navigator/constants';
 import {getUserBills, getUserId} from '../../utils/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { editProfile } from './../../utils/api';
+import PageLogo from '../pageLogo';
 
 interface BillingData {
   amount: string;
@@ -34,6 +35,7 @@ interface BillingData {
 const Billing = ({route}) => {
   const {userData} = route.params;
   const navigation = useNavigation();
+  const image = require('./../../assets/logo/background.jpeg');
 
   console.log('userData in edit params', userData);
 
@@ -53,7 +55,11 @@ const Billing = ({route}) => {
    };
 
   return (
+    <ImageBackground
+    source={image}
+    style={{flex: 1, width: null, height: null}}>
     <SafeAreaView>
+      <PageLogo />
     <KeyboardAvoidingView>
      <ScrollView>
     <Formik
@@ -75,7 +81,7 @@ const Billing = ({route}) => {
 
             <View style={Styles.container}>
               <View style={Styles.loginContainer}>
-                <Text style={{marginLeft: 10, fontSize: 14}}>First Name</Text>
+                <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>First Name</Text>
                 <TextInput
                   defaultValue={formikProps.values.first_name}
                   style={[Styles.inputLabel, Styles.textStyle]}
@@ -84,7 +90,7 @@ const Billing = ({route}) => {
                 />
 
 
-                <Text style={{marginLeft: 10, fontSize: 14}}>Last Name</Text>
+                <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Last Name</Text>
                 <TextInput
 
                   // placeholder="Password"
@@ -95,7 +101,7 @@ const Billing = ({route}) => {
                   onBlur={formikProps.handleBlur('last_name')}
                 />
 
-<Text style={{marginLeft: 10, fontSize: 14}}>Phone Number</Text>
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Phone Number</Text>
                 <TextInput
 
                   // placeholder="Password"
@@ -107,7 +113,7 @@ const Billing = ({route}) => {
                   onBlur={formikProps.handleBlur('phone_number')}
                 />
 
-<Text style={{marginLeft: 10, fontSize: 14}}>Email</Text>
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Email</Text>
                 <TextInput
                   // secureTextEntry={true}
                   // placeholder="Password"
@@ -119,7 +125,7 @@ const Billing = ({route}) => {
                 />
 
 
-              <Text style={{marginLeft: 10, fontSize: 14}}>Address</Text>
+              <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Address</Text>
                 <TextInput
                   // secureTextEntry={true}
                   // placeholder="Password"
@@ -131,7 +137,7 @@ const Billing = ({route}) => {
                 />
 
 
-              <Text style={{marginLeft: 10, fontSize: 14}}>Zip Code</Text>
+              <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Zip Code</Text>
                 <TextInput
                   value={formikProps.values.zip_code}
                   style={[Styles.inputLabel, Styles.textStyle]}
@@ -144,8 +150,8 @@ const Billing = ({route}) => {
                   color="#fff"
                   onPress={formikProps.handleSubmit}
                   mode="contained"
-                  labelStyle={Styles.nextButtonText}
-                  style={Styles.nextButtonContainer}
+                  labelStyle={Styles.nextButtonText1}
+                  style={Styles.nextButtonContainer1}
                 >
                  {'  '}Submit{'  '}
                 </Button>
@@ -169,6 +175,8 @@ const Billing = ({route}) => {
 </KeyboardAvoidingView>
 
   </SafeAreaView>
+  </ImageBackground>
+
   );
 };
 

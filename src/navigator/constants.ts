@@ -5,10 +5,13 @@ export const ScreenNames = {
   BillingScreen: 'Billing',
   UpdatesScreen: 'Updates',
   LoginScreen: 'Login',
+  SplashScreen: 'Splash',
   RegisterScreen: 'Register',
   Current: 'Current',
+  Opd: 'Opd',
   InfoScreen: 'Information',
   HospitalSelection: 'HospitalSelection',
+  HospitalSelectionOpd: 'HospitalSelectionOpd',
   History: 'History',
   AccountScreen: 'Account',
   ForgotPassword: 'Forgot Password',
@@ -17,7 +20,7 @@ export const ScreenNames = {
 }
 
 export const API = {
-  SERVER_URL: 'http://3.109.71.28/',
+  SERVER_URL: 'http://3.110.35.199/',
   CONTENT_TYPE: 'application/json',
 }
 

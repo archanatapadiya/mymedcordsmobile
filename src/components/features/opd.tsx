@@ -37,7 +37,7 @@ const History = ({route}) => {
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View style={{flexDirection: 'row'}}>
           <MaterialCommunityIcons
-            onPress={() => navigate(ScreenNames.HospitalSelection)}
+            onPress={() => navigate(ScreenNames.HospitalSelectionOpd)}
             name="arrow-left-circle"
             color={Colors.black}
             size={30}
@@ -52,7 +52,7 @@ const History = ({route}) => {
               alignItems: 'center',
               margin: 20,
             }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>HISTORY</Text>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>OPD DETAILS</Text>
           </View>
         </View>
 
@@ -97,7 +97,7 @@ const History = ({route}) => {
               title="REPORTS"
               onPress={() =>
                 navigate(ScreenNames.ReportsScreen, {
-                  type: 'history',
+                  type: 'opd',
                   hospName: hospName,
                   logo: logo,
                   hospitalId: hospitalId,
@@ -112,7 +112,7 @@ const History = ({route}) => {
               title="UPDATES"
               onPress={() =>
                 navigate(ScreenNames.UpdatesScreen, {
-                  type: 'history',
+                  type: 'opd',
                   hospName: hospName,
                   logo: logo,
                   hospitalId: hospitalId,
@@ -127,7 +127,7 @@ const History = ({route}) => {
               title="BILLING"
               onPress={() =>
                 navigate(ScreenNames.BillingScreen, {
-                  type: 'history',
+                  type: 'opd',
                   hospName: hospName,
                   logo: logo,
                   hospitalId: hospitalId,
