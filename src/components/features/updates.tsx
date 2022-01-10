@@ -257,7 +257,7 @@ const Updates = ({route}) => {
               alignSelf: 'center',
               textAlign: 'center',
             }}>
-            No Updates Uploaded
+            No Health Updates Uploaded
           </Text>
         )}
       </ScrollView>

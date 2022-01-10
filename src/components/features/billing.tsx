@@ -224,7 +224,7 @@ const Billing = ({route}) => {
               alignSelf: 'center',
               textAlign: 'center',
             }}>
-            No Updates Uploaded
+            No Bills Uploaded
           </Text>
         )}
       </ScrollView>

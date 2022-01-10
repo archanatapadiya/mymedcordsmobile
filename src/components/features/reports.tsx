@@ -166,17 +166,18 @@ const Reports = ({route}) => {
                 <DataTable.Title>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 15,
                       fontWeight: 'bold',
                       color: '#228EC7',
                     }}>
                     Date
                   </Text>
                 </DataTable.Title>
+
                 <DataTable.Title>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 15,
                       fontWeight: 'bold',
                       color: '#228EC7',
                     }}>
@@ -186,7 +187,17 @@ const Reports = ({route}) => {
                 <DataTable.Title>
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 15,
+                      fontWeight: 'bold',
+                      color: '#228EC7',
+                    }}>
+                    Report Date
+                  </Text>
+                </DataTable.Title>
+                <DataTable.Title numeric>
+                  <Text
+                    style={{
+                      fontSize: 15,
                       fontWeight: 'bold',
                       color: '#228EC7',
                     }}>
@@ -205,12 +216,11 @@ const Reports = ({route}) => {
                         backgroundColor: '#67C2F1',
                       }}>
                       <DataTable.Cell>{u.event_time}</DataTable.Cell>
-                      <DataTable.Cell
-                      // style={{justifyContent: 'center'}}
-                      >
-                        {u.dr_name}
-                      </DataTable.Cell>
-                      <DataTable.Cell>
+
+                      <DataTable.Cell>{u.dr_name}</DataTable.Cell>
+                      <DataTable.Cell>{u.testdate}</DataTable.Cell>
+
+                      <DataTable.Cell numeric>
                         <Text
                           style={{color: 'blue'}}
                           onPress={() => Linking.openURL(u.file_url)}>
