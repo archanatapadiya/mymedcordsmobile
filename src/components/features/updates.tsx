@@ -34,14 +34,17 @@ const Updates = ({route}) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState(false);
+  const [modalTime, setModalTime] = useState('');
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const toggleModal1 = props => {
+  const toggleModal1 = (props: any, props1: any) => {
+    console.log('props--->', props1);
     setModalVisible(true);
     setModalText(props);
+    setModalTime(props1);
   };
 
   let typeUpper = 'CURRENT';
@@ -227,9 +230,12 @@ const Updates = ({route}) => {
                       <DataTable.Cell>
                         <Text
                           style={{color: 'blue'}}
-                          onPress={() => toggleModal1(u.health_update)}>
+                          onPress={() =>
+                            toggleModal1(u.health_update, u.datetime)
+                          }>
                           <Modal isVisible={isModalVisible}>
                             <View style={{flex: 1, marginTop: '50%'}}>
+                              <Button title={modalTime} onPress={toggleModal} />
                               <Button title={modalText} onPress={toggleModal} />
                               <Button
                                 title="Close"
