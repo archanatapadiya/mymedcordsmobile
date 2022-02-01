@@ -146,6 +146,7 @@ const Current = ({route}) => {
                   }}>
                   <Button
                     title="VIEW REPORTS"
+                    // color="#D3ECF9"
                     onPress={() =>
                       navigate(ScreenNames.ReportsScreen, {
                         type: 'opd',
@@ -160,6 +161,7 @@ const Current = ({route}) => {
                   <Text>{'\n'}</Text>
                   <Button
                     title="VIEW NOTES"
+                    // color="#D3ECF9"
                     onPress={() =>
                       navigate(ScreenNames.UpdatesScreen, {
                         type: 'opd',
@@ -175,6 +177,7 @@ const Current = ({route}) => {
 
                   <Button
                     title="VIEW BILLING"
+                    // color="#D3ECF9"
                     onPress={() =>
                       navigate(ScreenNames.BillingScreen, {
                         type: 'opd',
@@ -203,6 +206,19 @@ const Current = ({route}) => {
           </Text>
         )}
       </ScrollView>
+
+      <View
+        style={{
+          width: '100%',
+          height: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          // position: 'absolute',
+          bottom: 0,
+        }}>
+        <Text style={{color: '#D3ECF9'}}>v2.0</Text>
+        <Text style={{color: '#D3ECF9'}}>MEDCLINIQ</Text>
+      </View>
     </ImageBackground>
   );
 };

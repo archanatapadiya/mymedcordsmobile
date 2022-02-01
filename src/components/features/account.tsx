@@ -61,8 +61,6 @@ const Billing = ({route}) => {
     <ImageBackground
     source={image}
     style={{flex: 1, width: null, height: null}}>
-    <SafeAreaView>
-      <StatusBar />
       <PageLogo />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View
@@ -118,7 +116,18 @@ const Billing = ({route}) => {
 
         </View>
       </ScrollView>
-    </SafeAreaView>
+    <View
+        style={{
+          width: '100%',
+          height: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          // position: 'absolute',
+          bottom: 0,
+        }}>
+        <Text style={{color: '#D3ECF9'}}>v2.0</Text>
+        <Text style={{color: '#D3ECF9'}}>MEDCLINIQ</Text>
+      </View>
     </ImageBackground>
 
   );

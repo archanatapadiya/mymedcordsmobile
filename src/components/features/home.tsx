@@ -180,10 +180,10 @@ const App = () => {
           height: 50,
           justifyContent: 'center',
           alignItems: 'center',
-          position: 'absolute',
+          // position: 'absolute',
           bottom: 0,
         }}>
-        <Text style={{color: '#D3ECF9'}}>v1.0 Beta</Text>
+        <Text style={{color: '#D3ECF9'}}>v2.0</Text>
         <Text style={{color: '#D3ECF9'}}>MEDCLINIQ</Text>
       </View>
     </ImageBackground>
