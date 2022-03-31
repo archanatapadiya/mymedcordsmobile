@@ -118,6 +118,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: '4%',
   },
+  nextButtonContainer2: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#85CFF5',
+    borderRadius: 10,
+    height: 38,
+    borderColor: '#85CFF5',
+    borderWidth: 1,
+    marginVertical: '3%',
+  },
   nextButtonText1: {
     textAlign: 'center',
     fontSize: 18,
@@ -125,6 +134,14 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'bold',
     lineHeight: 25,
+  },
+  nextButtonText2: {
+    textAlign: 'left',
+    fontSize: 14,
+    color: 'white',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    lineHeight: 15,
   },
 
   privacyTextStyle: {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "443085177774",
+    "project_id": "mymedcords-d4fa4",
+    "storage_bucket": "mymedcords-d4fa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443085177774:android:73d6d4dd6a4920e90dfe3f",
+        "android_client_info": {
+          "package_name": "com.hospiuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443085177774-4c6uuslu0fiusrv6eov616t75doc2u5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd2JAqnPzAQFgSnW6pVvflkRjYy8yG7YI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443085177774-4c6uuslu0fiusrv6eov616t75doc2u5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

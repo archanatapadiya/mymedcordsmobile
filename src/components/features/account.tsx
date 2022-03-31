@@ -17,7 +17,7 @@ import {navigate} from '../../navigator/NavigationService';
 import {ScreenNames} from '../../navigator/constants';
 import {getUserName, getUserId, fetchUserDetails} from '../../utils/api';
 import PageLogo from '../pageLogo';
-
+import UploadImage from './uploadImageDisplay';
 interface BillingData {
   amount: string;
   bill_file_name: string;
@@ -29,14 +29,24 @@ const Billing = ({route}) => {
   const {userData} = route.params;
   const isFocused = useIsFocused();
   const [userData1, setUserData1] = useState({});
+  const [bmi, setBmi] = useState(0);
+
   const [loggedInUserId, setLoggedInUserId] = useState({});
   const image = require('./../../assets/logo/background.jpeg');
 
-  console.log('userData1123',isFocused, userData1, userData);
+  console.log('userData1123', userData1, userData);
   const fetchUserData = async (loggedInUserId: any) => {
     const userReports = await fetchUserDetails(loggedInUserId);
     let userloggedData = userReports?.data;
 
+    let squHeight = Math.pow(userloggedData?.height, 2);
+    let squWeight = userloggedData?.weight * 10000;
+
+    let bmiCalc = ((squWeight / squHeight).toFixed(2));
+    console.log('squHeight', bmiCalc);
+
+    console.log('userloggedDatauserloggedData', userloggedData);
+    setBmi(bmiCalc);
     setUserData1(userloggedData);
     return userloggedData;
   };
@@ -72,9 +82,13 @@ const Billing = ({route}) => {
             paddingLeft: '2%',
 
           }}>
+
           <Text style={{margin: 10, fontSize: 20, color: '#D3ECF9'}}>
-            <Text style={{fontWeight: 'bold'}}>First Name: </Text>{' '}
-            {userData1?.first_name} {'\n\n'}
+          <UploadImage userData1={userData1} /> {'\n\n'}
+          <Text style={{fontWeight: 'bold'}}>First Name: </Text>{' '}
+            {userData1?.first_name}
+
+            {'\n\n'}
             <Text style={{fontWeight: 'bold'}}>Last Name: </Text>{' '}
             {userData1?.last_name}
             {'\n\n'}
@@ -90,15 +104,39 @@ const Billing = ({route}) => {
             <Text style={{fontWeight: 'bold'}}>Phone No:</Text>{' '}
             {userData1?.phone_number}
             {'\n\n'}
-            {userData1?.is_admit && (
+            <Text style={{fontWeight: 'bold', textDecorationLine:'underline'}}>Health Details</Text>{' '}
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>Health ID:</Text>{' '}
+            {userData1?.health_id}
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>Blood Group:</Text>{' '}
+            {userData1?.blood_group}
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>Last Blood Pressure:</Text>{' '}
+            {userData1?.blood_pressure}
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>Height:</Text>{' '}
+            {userData1?.height ? userData1?.height : '-' } cm
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>Weight:</Text>{' '}
+            {userData1?.weight ? userData1?.weight : '-'} kg
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>BMI:</Text>{' '}
+            {bmi}
+            {'\n\n'}
+            <Text style={{fontWeight: 'bold'}}>Pulse:</Text>{' '}
+            {userData1?.pulse} {'\n\n'}
+             {userData1?.is_admit && (
               <Text style={{fontSize: 20}}>
                 <Text style={{fontWeight: 'bold'}}>Room No:</Text>{' '}
                 {userData1?.room_number}
                 {'\n\n'}
               </Text>
-            )}
+             )}
           </Text>
+
         </View>
+
 
         <View style={styles.buttonView}>
 

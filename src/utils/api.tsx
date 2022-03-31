@@ -3,6 +3,10 @@ import {unProtectedAxios as unprotectedAxios} from './helpers';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Constants} from '../navigator/constants';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import moment from 'moment';
+import {useNavigation} from '@react-navigation/native';
+import {ScreenNames} from '../navigator/constants';
 
 export const saveUserId = async (id: any) => {
   await AsyncStorage.setItem(
@@ -11,10 +15,31 @@ export const saveUserId = async (id: any) => {
   );
 };
 
+export const saveUserType = async (user_type: string) => {
+  await AsyncStorage.setItem(
+    Constants.STORAGE_ITEM_USER_TYPE,
+    JSON.stringify(user_type),
+  );
+};
+
 export const saveUserName = async (user_name: string) => {
   await AsyncStorage.setItem(
     Constants.STORAGE_ITEM_USERNAME,
     JSON.stringify(user_name),
+  );
+};
+
+export const saveSearchedUserId = async (id: any) => {
+  await AsyncStorage.setItem(
+    Constants.STORAGE_ITEM_SEARCHED_USER_ID,
+    JSON.stringify(id),
+  );
+};
+
+export const saveHospitalType = async (hosp_type: string) => {
+  await AsyncStorage.setItem(
+    Constants.STORAGE_ITEM_HOSPITAL_TYPE,
+    JSON.stringify(hosp_type),
   );
 };
 
@@ -30,12 +55,36 @@ export const getUserId = async () => {
   return userId ? JSON.parse(userId) : null;
 };
 
+export const getSearchedUserId = async () => {
+  let userId = await AsyncStorage.getItem(
+    Constants.STORAGE_ITEM_SEARCHED_USER_ID,
+    null,
+  );
+  return userId ? JSON.parse(userId) : null;
+};
+
+export const getHospitalType = async () => {
+  let hospType = await AsyncStorage.getItem(
+    Constants.STORAGE_ITEM_HOSPITAL_TYPE,
+    null,
+  );
+  return hospType ? JSON.parse(hospType) : null;
+};
+
 export const getUserName = async () => {
   let userName = await AsyncStorage.getItem(
     Constants.STORAGE_ITEM_USERNAME,
     null,
   );
   return userName ? JSON.parse(userName) : null;
+};
+
+export const getUserType = async () => {
+  let userType = await AsyncStorage.getItem(
+    Constants.STORAGE_ITEM_USER_TYPE,
+    null,
+  );
+  return userType ? JSON.parse(userType) : null;
 };
 
 export const getToken = async () => {
@@ -55,8 +104,22 @@ export const login = async (email: string, password: string) => {
   }
 };
 
+export const hosplogin = async (email: string, password: string) => {
+  try {
+    const response = await unprotectedAxios.post('/hospital_login/', {
+      username: email,
+      password: password,
+    });
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
 export const editProfile = async params => {
   try {
+    console.log('values in api edit profile', params);
+
     const response = await unprotectedAxios.post('update_user_profile/', {
       user_id: params.user_id,
       email: params.email,
@@ -64,11 +127,55 @@ export const editProfile = async params => {
       lastname: params.last_name,
       address: params.address,
       zip_code: params.zip_code,
+      blood_group: params.blood_group,
+      blood_pressure: params.blood_pressure,
+      // bmi: params.bmi,
+      height: params.height,
+      weight: params.weight,
+      pulse: params.pulse,
+      health_id: params.health_id,
     });
+    console.log('response in api', response);
     return response.data;
   } catch (error) {
     console.log('error in api' + error);
   }
+};
+
+export const uploadImage = async (params: any) => {
+  var photo = {
+    uri: params?.image1?.path,
+    type: params?.image1?.mime,
+    name: 'photo1.jpg',
+  };
+
+  let token = await AsyncStorage.getItem(Constants.STORAGE_ITEM_TOKEN, null);
+
+  var form = new FormData();
+  form.append('image', photo);
+  form.append('user_id', params.user_id);
+  form.append('firstname', params?.userData?.first_name);
+  form.append('lastname', params?.userData?.last_name);
+  form.append('email', params?.userData?.email);
+  form.append('address', params?.userData?.address);
+  form.append('zip_code', params?.userData?.zip_code);
+  form.append('blood_group', params?.userData?.blood_group);
+  form.append('blood_pressure', params?.userData?.blood_pressure);
+  form.append('bmi', params?.userData?.bmi);
+  form.append('pulse', params?.userData?.pulse);
+  form.append('health_id', params?.userData?.health_id);
+
+  console.log('image in form', params, form);
+  const res = fetch('http://3.110.35.199/update_user_profile/', {
+    body: form,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: JSON.parse(token),
+    },
+  });
+
+  return res;
 };
 
 export const verifyUser = async (username: string, date: Date) => {
@@ -80,6 +187,31 @@ export const verifyUser = async (username: string, date: Date) => {
       dob: dateOfBirth,
     });
     console.log('response in api', response);
+    return response;
+  } catch (error) {
+    console.log('error in  verifyUser api' + error);
+  }
+};
+
+export const verifyHospital = async (username: string, reg_no: string) => {
+  try {
+    const response = await unprotectedAxios.post('/check_hospital_username/', {
+      Username: username.toLowerCase(),
+      reg_no: reg_no,
+    });
+    console.log('response in hospi verify api', response);
+    return response;
+  } catch (error) {
+    console.log('error in  verifyUser api' + error);
+  }
+};
+
+export const checkSpace = async (user_id: any) => {
+  try {
+    const response = await protectedAxios.post('/check_space/', {
+      user_id: user_id,
+    });
+    console.log('response in cehck_space', response);
     return response;
   } catch (error) {
     console.log('error in  verifyUser api' + error);
@@ -134,6 +266,19 @@ export const logout = async () => {
   }
 };
 
+export const getUserDetails = async (userId: any, hospitalId: any) => {
+  try {
+    let params = {
+      user_id: userId,
+      hospital_id: hospitalId,
+    };
+    const response = await protectedAxios.post('/get_user_details/', params);
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
 export const getUserReports = async (
   userId: any,
   hospitalId: any,
@@ -142,12 +287,11 @@ export const getUserReports = async (
   try {
     let params = {
       user_id: userId,
-      // hospital_id: hospitalId,
+      hospital_id: hospitalId,
     };
-    if (type != 'current') {
+    if (type == 'current') {
       params = {
         user_id: userId,
-        hospital_id: hospitalId,
       };
     }
     const response = await protectedAxios.post('/report_fetch/', params);
@@ -155,6 +299,321 @@ export const getUserReports = async (
   } catch (error) {
     console.log('error in api' + error);
   }
+};
+
+export const deleteUserReports = async (id: any) => {
+  try {
+    let params = {
+      id: id,
+      delete: true,
+    };
+
+    const response = await protectedAxios.post('/delete_report/', params);
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const getUserHealthdetails = async (
+  userId: any,
+  hospitalId: any,
+  type: any,
+) => {
+  try {
+    let params = {
+      user_id: userId,
+      hospital_id: hospitalId,
+    };
+    if (type == 'current') {
+      params = {
+        user_id: userId,
+        // hospital_id: hospitalId,
+      };
+    }
+    const response = await protectedAxios.post(
+      '/fetch_user_health_update/',
+      params,
+    );
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const deleteUserHealthDetails = async (id: any) => {
+  try {
+    let params = {
+      id: id,
+      delete: true,
+    };
+
+    const response = await protectedAxios.post(
+      '/delete_health_update/',
+      params,
+    );
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const getUserBilling = async (
+  userId: any,
+  hospitalId: any,
+  type: any,
+) => {
+  try {
+    let params = {
+      user_id: userId,
+      hospital_id: hospitalId,
+    };
+    if (type == 'current') {
+      params = {
+        user_id: userId,
+        // hospital_id: hospitalId,
+      };
+    }
+    const response = await protectedAxios.post('/bill_fetch/', params);
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const deleteUserBilling = async (id: any) => {
+  try {
+    let params = {
+      id: id,
+      delete: true,
+    };
+
+    const response = await protectedAxios.post('/delete_bill/', params);
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const getUserDocuments = async (userId: any) => {
+  try {
+    let params = {
+      user_id: userId,
+    };
+
+    const response = await protectedAxios.post('/user_documents/', params);
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const getOffers = async () => {
+  try {
+    const response = await protectedAxios.post('/view_offers/');
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const getHealthTips = async () => {
+  try {
+    const response = await protectedAxios.post('/view_health_tip/');
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
+export const admitPatient = async (
+  id: any,
+  hospitalId: any,
+  isAdmit: any,
+  roomNumber: any,
+) => {
+  try {
+    let params = {
+      user_id: id,
+      hospital_id: hospitalId,
+      is_admit: isAdmit,
+      room_number: roomNumber,
+    };
+
+    const response = await protectedAxios.post('/admit_user/', params);
+    return response.data;
+  } catch (error) {
+    console.log('error in admit api' + error);
+  }
+};
+
+export const addUserReports = async (
+  values: any,
+  input2: any,
+  loggedInUserId: any,
+  fileValue: any,
+  searchedUserId: any,
+  loggedInHospType: any,
+  is_user_upload: any,
+  singleFile: any,
+) => {
+  var photo = {
+    uri: singleFile.uri,
+    type: singleFile.type,
+    name: singleFile.name,
+  };
+
+  let token = await AsyncStorage.getItem(Constants.STORAGE_ITEM_TOKEN, null);
+
+  const reportDate = moment(input2.date).format('yyyy-MM-DD');
+
+  let isOpdType3 = true;
+  if (fileValue == 'ipd') {
+    isOpdType3 = false;
+  }
+  let opdFlag = null;
+  if (loggedInHospType == 0) {
+    opdFlag = null;
+  }
+  if (loggedInHospType == 1) {
+    opdFlag = true;
+  }
+  if (loggedInHospType == 2) {
+    opdFlag = false;
+  }
+  if (loggedInHospType == 3) {
+    opdFlag = isOpdType3;
+  }
+  var form_data = new FormData();
+
+  form_data.append('file', photo);
+  form_data.append('file_name', values.file_name);
+  form_data.append('description', values.description);
+  form_data.append('user_id', searchedUserId);
+  form_data.append('hospital_id', loggedInUserId);
+  form_data.append('is_opd', opdFlag);
+  form_data.append('dr_name', values.doctor);
+  form_data.append('testdate', reportDate);
+  form_data.append('is_user_upload', is_user_upload);
+
+  console.log('form_data in my doc upload', form_data);
+  const res = await fetch('http://3.110.35.199/report_upload/', {
+    body: form_data,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: JSON.parse(token),
+    },
+  });
+
+  console.log('res upload report', res);
+  return res;
+};
+
+export const addUserUpdates = async (
+  values: any,
+  input2: any,
+  loggedInUserId: any,
+  fileValue: any,
+  searchedUserId: any,
+  loggedInHospType: any,
+) => {
+  let token = await AsyncStorage.getItem(Constants.STORAGE_ITEM_TOKEN, null);
+
+  const reportDate = moment(input2.date).format('yyyy-MM-DDTHH:ss');
+
+  let isOpdType3 = true;
+  if (fileValue == 'ipd') {
+    isOpdType3 = false;
+  }
+  let opdFlag = null;
+  if (loggedInHospType == 1) {
+    opdFlag = true;
+  }
+  if (loggedInHospType == 2) {
+    opdFlag = false;
+  }
+  if (loggedInHospType == 3) {
+    opdFlag = isOpdType3;
+  }
+
+  var form_data = new FormData();
+
+  form_data.append('health_update', values.health_update);
+  form_data.append('datetime', reportDate);
+  form_data.append('user_id', searchedUserId);
+  form_data.append('hospital_id', loggedInUserId);
+  form_data.append('dr_name', values.doctor);
+  form_data.append('is_opd', opdFlag);
+
+  const res = await fetch('http://3.110.35.199/user_health_update/', {
+    body: form_data,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: JSON.parse(token),
+    },
+  });
+
+  console.log('res upload report', res);
+  return res;
+};
+
+export const addUserBills = async (
+  values: any,
+  input2: any,
+  loggedInUserId: any,
+  fileValue: any,
+  searchedUserId: any,
+  loggedInHospType: any,
+  singleFile: any,
+) => {
+  var photo = {
+    uri: singleFile.uri,
+    type: singleFile.type,
+    name: singleFile.name,
+  };
+
+  console.log('photophoto', photo, singleFile);
+  let token = await AsyncStorage.getItem(Constants.STORAGE_ITEM_TOKEN, null);
+
+  const reportDate = moment(input2.date).format('yyyy-MM-DD');
+
+  let isOpdType3 = true;
+  if (fileValue == 'ipd') {
+    isOpdType3 = false;
+  }
+  let opdFlag = null;
+  if (loggedInHospType == 1) {
+    opdFlag = true;
+  }
+  if (loggedInHospType == 2) {
+    opdFlag = false;
+  }
+  if (loggedInHospType == 3) {
+    opdFlag = isOpdType3;
+  }
+
+  var form_data = new FormData();
+
+  form_data.append('file', photo);
+  form_data.append('bill_file_name', values.bill_file_name);
+  form_data.append('remark', values.remark);
+  form_data.append('user_id', searchedUserId);
+  form_data.append('hospital_id', loggedInUserId);
+  form_data.append('is_opd', opdFlag);
+
+  const res = await fetch('http://3.110.35.199/bill_upload/', {
+    body: form_data,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: JSON.parse(token),
+    },
+  });
+
+  console.log('res upload bill', res);
+  return res;
 };
 
 export const getUserUpdates = async (userId: any, hospitalId: any) => {
@@ -197,6 +656,17 @@ export const fetchUserDetails = async (userId: any) => {
     console.log('user id in params in fetch user', userId);
     const response = await protectedAxios.post('/get_user_details/', {
       user_id: userId,
+    });
+    return response.data;
+  } catch (error) {
+    console.log('error in api in fetch user' + error);
+  }
+};
+
+export const searchPatient = async (username: any) => {
+  try {
+    const response = await protectedAxios.post('/find_request/', {
+      username: username,
     });
     return response.data;
   } catch (error) {

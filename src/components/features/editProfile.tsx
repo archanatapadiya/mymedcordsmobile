@@ -22,8 +22,9 @@ import {navigate, push} from '../../navigator/NavigationService';
 import {ScreenNames} from '../../navigator/constants';
 import {getUserBills, getUserId} from '../../utils/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { editProfile } from './../../utils/api';
+import { editProfile, saveUserName } from './../../utils/api';
 import PageLogo from '../pageLogo';
+import UploadImage from './uploadImage';
 
 interface BillingData {
   amount: string;
@@ -41,6 +42,7 @@ const Billing = ({route}) => {
 
   const onLogin = async(values: any, navigation: any) => {
 
+    console.log('values in edit profile', values);
     let params = {
       ...values,
       user_id: userData.user_id,
@@ -48,8 +50,13 @@ const Billing = ({route}) => {
     const res = await editProfile(params);
     console.log('userData in edit', res);
 
+    // if (!res?.is_success){
+    //   navigation.navigate(ScreenNames.AccountScreen);
+    // }
 
     if (res?.is_success){
+      // console.log('res123123', res);
+      // const saveLoggedUserName = await saveUserName(res?.data?.first_name);
       navigation.navigate(ScreenNames.AccountScreen);
     }
    };
@@ -60,14 +67,22 @@ const Billing = ({route}) => {
     style={{flex: 1, width: null, height: null}}>
       <PageLogo />
      <ScrollView>
+
     <Formik
       initialValues={{
         first_name: userData?.first_name || '',
         last_name: userData?.last_name || '',
         email:userData?.email || '',
         address:userData?.address || '',
-        zip_code:(userData?.zip_code).toString() || 0,
+        zip_code:(userData?.zip_code)?.toString() || 0,
         phone_number: userData?.phone_number || '',
+        blood_group: userData?.blood_group || null,
+        blood_pressure: userData?.blood_pressure || null,
+        height: (userData?.height)?.toString() || 0,
+        weight: (userData?.weight)?.toString() || 0,
+        // bmi: userData?.bmi || null,
+        pulse: (userData?.pulse)?.toString() || 0,
+        health_id: userData?.health_id || null,
       }}
       onSubmit={values => {
        onLogin(values, navigation);
@@ -79,7 +94,10 @@ const Billing = ({route}) => {
 
             <View style={Styles.container}>
               <View style={Styles.loginContainer}>
-                <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>First Name</Text>
+              <UploadImage userData={userData} />
+
+
+                <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}> {'\n\n'}First Name</Text>
                 <TextInput
                   defaultValue={formikProps.values.first_name}
                   style={[Styles.inputLabel, Styles.textStyle]}
@@ -142,6 +160,82 @@ const Billing = ({route}) => {
                   onChangeText={formikProps.handleChange('zip_code')}
                   maxLength={120}
                   onBlur={formikProps.handleBlur('zip_code')}
+                />
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9', fontWeight: 'bold', textDecorationLine:'underline'}}>{'\n'}HEALTH DETAILS{'\n'}</Text>
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Health ID</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.health_id}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('health_id')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('health_id')}
+                />
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Blood Group</Text>
+                <TextInput
+                  value={formikProps.values.blood_group}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('blood_group')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('blood_group')}
+                />
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Last Blood pressure</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.blood_pressure}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('blood_pressure')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('blood_pressure')}
+                />
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Height (cm)</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.height}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('height')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('height')}
+                />
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Weight (kg)</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.weight}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('weight')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('weight')}
+                />
+
+{/* <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>BMI</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.bmi}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('bmi')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('bmi')}
+                /> */}
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Pulse</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.pulse}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('pulse')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('pulse')}
                 />
 
                 <Button

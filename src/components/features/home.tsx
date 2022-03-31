@@ -8,9 +8,9 @@ import {
   useColorScheme,
   View,
   ImageBackground,
-  Button,
   Alert,
   Image,
+  TextInput,
 } from 'react-native';
 
 import {
@@ -19,22 +19,32 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import {Formik} from 'formik';
+import {Button, Snackbar} from 'react-native-paper';
 import Header from '../header';
 import Carousel from '../carousel';
 import {navigate, push} from '../../navigator/NavigationService';
 import {API, ScreenNames} from '../../navigator/constants';
-import {getUserName, getUserId, fetchUserDetails} from '../../utils/api';
+import {
+  getUserName,
+  getUserId,
+  getUserType,
+  fetchUserDetails,
+  searchPatient,
+  saveSearchedUserId,
+} from '../../utils/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PageLogo from '../pageLogo';
+import Styles from './login/styles';
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [userData, setUserData] = useState({});
-
-  console.log('userData in home', userData);
-
   const [loggedInUserId, setLoggedInUserId] = useState({});
+  const [loggedInUserType, setLoggedInUserType] = useState({});
+
+  const [searchedUser, setSearchedUser] = useState('');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -47,6 +57,8 @@ const App = () => {
     const userId = await getUserId();
     setLoggedInUserId(userId);
     const userName = await getUserName();
+    const userType = await getUserType();
+    setLoggedInUserType(userType);
     return userName;
   };
 
@@ -67,6 +79,22 @@ const App = () => {
     return userloggedData;
   };
 
+  const onSearchPatient = async (username: string) => {
+    let success = await searchPatient(username);
+
+    console.log('success---------->', success);
+    if (success.data.user_id) {
+      navigate(ScreenNames.PatientDetailsScreen, {
+        userData: userData,
+      });
+    }
+
+    if (success) {
+      setSearchedUser(success.data.username);
+      const saveSearchedUser = await saveSearchedUserId(success.data.user_id);
+    }
+  };
+
   useEffect(() => {
     if (loggedInUserId != 0) {
       const userDetails = fetchUserData(loggedInUserId);
@@ -80,49 +108,21 @@ const App = () => {
       <PageLogo />
 
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View
-          style={{
-            marginTop: '10%',
-          }}>
-          <View style={{marginTop: '5%'}}>
-            <Text style={styles.sectionHeading}>CLINIC RECORDS (OPD)</Text>
-          </View>
+        {loggedInUserType == 'Patient' && (
+          <View
+            style={{
+              marginTop: '10%',
+            }}>
+            <View style={{marginTop: '5%'}}>
+              <Text style={styles.sectionHeading}>CLINIC RECORDS (OPD)</Text>
+            </View>
 
-          <View style={styles.buttonView}>
-            <MaterialCommunityIcons
-              onPress={() =>
-                navigate(ScreenNames.HospitalSelectionOpd, {
-                  userData: userData,
-                })
-              }
-              name="arrow-right-circle"
-              color="#D3ECF9"
-              size={40}
-              style={{marginLeft: '8%'}}
-            />
-            <Text
-              style={{
-                marginTop: '2%',
-                marginLeft: '5%',
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: '#D3ECF9',
-              }}>
-              View
-            </Text>
-          </View>
-
-          <View style={{marginTop: '10%'}}>
-            <Text style={styles.sectionHeading}>HOSPITAL RECORDS (IPD)</Text>
-          </View>
-
-          {userData?.is_admit && (
             <View style={styles.buttonView}>
               <MaterialCommunityIcons
                 onPress={() =>
-                  userData?.is_admit
-                    ? navigate(ScreenNames.Current, {userData: userData})
-                    : console.log('not a current user')
+                  navigate(ScreenNames.HospitalSelectionOpd, {
+                    userData: userData,
+                  })
                 }
                 name="arrow-right-circle"
                 color="#D3ECF9"
@@ -130,6 +130,11 @@ const App = () => {
                 style={{marginLeft: '8%'}}
               />
               <Text
+                onPress={() =>
+                  navigate(ScreenNames.HospitalSelectionOpd, {
+                    userData: userData,
+                  })
+                }
                 style={{
                   marginTop: '2%',
                   marginLeft: '5%',
@@ -137,41 +142,175 @@ const App = () => {
                   fontSize: 16,
                   color: '#D3ECF9',
                 }}>
-                Current
+                View
               </Text>
-
-              {/* <Button
-                title="CURRENT"
-                onPress={() =>
-                  navigate(ScreenNames.Current, {userData: userData})
-                }
-                disabled={!userData?.is_admit}
-              /> */}
             </View>
-          )}
 
-          <View style={styles.buttonView}>
-            <MaterialCommunityIcons
-              onPress={() =>
-                navigate(ScreenNames.HospitalSelection, {userData: userData})
-              }
-              name="arrow-right-circle"
-              color="#D3ECF9"
-              size={40}
-              style={{marginLeft: '8%'}}
-            />
-            <Text
-              style={{
-                marginTop: '2%',
-                marginLeft: '5%',
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: '#D3ECF9',
-              }}>
-              History
-            </Text>
+            <View style={{marginTop: '5%'}}>
+              <Text style={styles.sectionHeading}>HOSPITAL RECORDS (IPD)</Text>
+            </View>
+
+            {userData?.is_admit && (
+              <View style={styles.buttonView}>
+                <MaterialCommunityIcons
+                  onPress={() =>
+                    userData?.is_admit
+                      ? navigate(ScreenNames.Current, {userData: userData})
+                      : console.log('not a current user')
+                  }
+                  name="arrow-right-circle"
+                  color="#D3ECF9"
+                  size={40}
+                  style={{marginLeft: '8%'}}
+                />
+                <Text
+                  onPress={() =>
+                    userData?.is_admit
+                      ? navigate(ScreenNames.Current, {userData: userData})
+                      : console.log('not a current user')
+                  }
+                  style={{
+                    marginTop: '2%',
+                    marginLeft: '5%',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: '#D3ECF9',
+                  }}>
+                  Current
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.buttonView}>
+              <MaterialCommunityIcons
+                onPress={() =>
+                  navigate(ScreenNames.HospitalSelection, {userData: userData})
+                }
+                name="arrow-right-circle"
+                color="#D3ECF9"
+                size={40}
+                style={{marginLeft: '8%'}}
+              />
+              <Text
+                onPress={() =>
+                  navigate(ScreenNames.HospitalSelection, {userData: userData})
+                }
+                style={{
+                  marginTop: '2%',
+                  marginLeft: '5%',
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: '#D3ECF9',
+                }}>
+                History
+              </Text>
+            </View>
+
+            <View style={{marginTop: '5%'}}>
+              <Text style={styles.sectionHeading}>MY DOCUMENTS</Text>
+            </View>
+
+            <View style={styles.buttonView}>
+              <MaterialCommunityIcons
+                onPress={() =>
+                  navigate(ScreenNames.MyDocumentViewScreen, {
+                    userData: userData,
+                  })
+                }
+                name="arrow-right-circle"
+                color="#D3ECF9"
+                size={40}
+                style={{marginLeft: '8%'}}
+              />
+              <Text
+                onPress={() =>
+                  navigate(ScreenNames.MyDocumentViewScreen, {
+                    userData: userData,
+                  })
+                }
+                style={{
+                  marginTop: '2%',
+                  marginLeft: '5%',
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: '#D3ECF9',
+                }}>
+                View
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
+
+        {loggedInUserType == 'Health Center' && (
+          <View
+            style={{
+              marginTop: '10%',
+            }}>
+            <Formik
+              initialValues={{
+                username: '',
+              }}
+              onSubmit={values => {
+                onSearchPatient(values.username);
+              }}>
+              {formikProps => (
+                <React.Fragment>
+                  <View style={Styles.mainContainer}>
+                    <View style={Styles.container}>
+                      <View style={Styles.loginContainer}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            marginBottom: 15,
+                            color: '#D3ECF9',
+                          }}>
+                          {' '}
+                          SEARCH PATIENT
+                        </Text>
+
+                        <TextInput
+                          defaultValue={formikProps.values.username}
+                          placeholder="Enter phone number"
+                          style={[Styles.inputLabel1, Styles.textStyle]}
+                          // keyboardType="email-address"
+                          onChangeText={formikProps.handleChange('username')}
+                          onBlur={formikProps.handleBlur('username')}
+                        />
+                        <Text style={Styles.formErrorMessage}>
+                          {formikProps.touched.username &&
+                            formikProps.errors.username}
+                        </Text>
+
+                        {searchedUser === undefined && (
+                          <Text
+                            style={{
+                              textAlign: 'center',
+                              fontWeight: 'bold',
+                              fontSize: 14,
+                              marginBottom: 15,
+                              color: '#D3ECF9',
+                            }}>
+                            No record found, please register
+                          </Text>
+                        )}
+                        <Button
+                          color="#fff"
+                          onPress={formikProps.handleSubmit}
+                          mode="contained"
+                          labelStyle={Styles.nextButtonText1}
+                          style={Styles.nextButtonContainer1}>
+                          {'  '}Submit{'  '}
+                        </Button>
+                      </View>
+                    </View>
+                  </View>
+                </React.Fragment>
+              )}
+            </Formik>
+          </View>
+        )}
       </ScrollView>
 
       <View

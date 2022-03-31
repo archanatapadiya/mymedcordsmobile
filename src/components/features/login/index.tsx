@@ -15,14 +15,20 @@ import {
 import Styles from './styles';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { Button, Snackbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../../navigator/constants';
-import { login } from '../../../utils/api';
+import { login, hosplogin } from '../../../utils/api';
 import { App, Auth } from '../../../navigator/app-navigator';
-import { saveUserId, saveUserName, saveToken } from '../../../utils/api';
+import { saveUserId, saveUserName, saveToken, saveUserType, saveHospitalType } from '../../../utils/api';
 import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SelectDropdown from 'react-native-select-dropdown';
+import {Button, Snackbar, RadioButton} from 'react-native-paper';
+import messaging from '@react-native-firebase/messaging';
+
+import {
+  createChannel,
+} from '../../../services/localPushController';
 
 const validationSchema = yup.object().shape({
   // email: yup
@@ -37,14 +43,44 @@ const validationSchema = yup.object().shape({
     .min(5, 'The password must be more than 5 characters.'),
 });
 
-const onLogin = async (email: string, password: string, navigation: any) => {
-  const res = await login(email, password);
-  if (res?.is_success) {
+const onLogin = async (email: string, password: string, navigation: any, selectedUserType: string) => {
+
+  const checkToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+       console.log(fcmToken);
+    }
+   };
+
+
+  let res;
+  if (selectedUserType == 'Patient'){
+   res = await login(email, password);
+   console.log('res in login', res);
+   if (res?.is_success) {
+    checkToken();
+    createChannel();
     const saveUser = await saveUserId(res?.data?.user_id);
     const saveLoggedUserName = await saveUserName(res?.data?.first_name);
     const saveUserToken = await saveToken(res?.data?.token);
-    RNRestart.Restart();
+    const userType = await saveUserType(selectedUserType);
+    // RNRestart.Restart();
   }
+  }
+  if (selectedUserType == 'Health Center'){
+    res = await hosplogin(email, password);
+    if (res?.is_success) {
+      checkToken();
+      const saveUser = await saveUserId(res?.data?.user_id);
+      const saveLoggedUserName = await saveUserName(res?.data?.name);
+      const saveUserToken = await saveToken(res?.data?.token);
+      const userType = await saveUserType(selectedUserType);
+      const hospType = await saveHospitalType(res?.data?.hospital_type);
+      RNRestart.Restart();
+    }
+   }
+
+
   if (res == undefined) {
     Alert.alert('Login Error', 'Invalid username or password', [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -55,13 +91,21 @@ const onLogin = async (email: string, password: string, navigation: any) => {
 const Header = () => {
   const [visible, setVisibility] = useState(true);
   const navigation = useNavigation();
-
+  const [selectedUserType, setSelectedUserType] = useState('Patient');
+  const userType = ['Patient', 'Health Center'];
+  const [selectedUser, setSelectedUser] = useState('Patient');
   const eyeIcon = () => {
     setVisibility(!visible);
   };
 
   const forgotPassword = () => {
-    navigation.navigate(ScreenNames.ForgotPassword);
+    if (selectedUserType == 'Health Center'){
+      navigation.navigate(ScreenNames.ForgotPasswordHospital);
+    }
+    else {
+      navigation.navigate(ScreenNames.ForgotPassword);
+
+    }
   };
   const image = require('../../../assets/logo/background.jpeg');
 
@@ -80,7 +124,7 @@ const Header = () => {
                 password: '',
               }}
               onSubmit={(values) => {
-                onLogin(values.email, values.password, navigation);
+                onLogin(values.email, values.password, navigation, selectedUserType );
               }}
               validationSchema={validationSchema}
             >
@@ -98,10 +142,51 @@ const Header = () => {
                     </Text>
                     <View style={Styles.container}>
                       <View style={Styles.loginContainer}>
+
+                    <View style={{ alignItems: 'center', alignSelf:'center', marginTop: 40}}>
+
+
+<RadioButton.Group
+                        onValueChange={value => setSelectedUserType(value)}
+                        value={selectedUserType}>
                         <View
                           style={{
                             flexDirection: 'row',
-                            marginTop: 80,
+                            alignSelf: 'center',
+                          }}>
+                          <View style={{flexDirection: 'row'}}>
+                            <Text
+                              style={{
+                                marginTop: 5,
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                color: '#D3ECF9',
+                              }}>
+                              Patient
+                            </Text>
+                            <RadioButton value="Patient" />
+                          </View>
+                          <View style={{flexDirection: 'row', marginLeft: 20}}>
+                            <Text
+                              style={{
+                                marginTop: 5,
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                color: '#D3ECF9',
+                              }}>
+                              Health Center
+                            </Text>
+                            <RadioButton value="Health Center" />
+                          </View>
+                        </View>
+                      </RadioButton.Group>
+
+                      </View>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 60,
                             justifyContent: 'center',
                           }}
                         >

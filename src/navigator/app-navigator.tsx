@@ -5,6 +5,7 @@ import Login from '../../src/components/features/login';
 import Splash from '../../src/components/features/splash';
 import RegisterScreen from '../../src/components/features/register';
 import ForgotPassword from '../../src/components/features/forgotPassword';
+import ForgotPasswordHospital from '../../src/components/features/forgotPasswordHospital';
 import ResetPassword from '../../src/components/features/resetPassword';
 import Current from '../../src/components/features/current';
 import Opd from '../../src/components/features/opd';
@@ -16,6 +17,22 @@ import Reports from '../../src/components/features/reports';
 import Updates from '../../src/components/features/updates';
 import EditProfile from '../../src/components/features/editProfile';
 import AccountScreen from '../../src/components/features/account';
+import MoreScreen from '../../src/components/features/more';
+import ReminderScreen from '../../src/components/features/reminder';
+import CreateReminderScreen from '../../src/components/features/createReminder';
+import BookAppointmentScreen from '../../src/components/features/bookAppointment';
+import ListAppointmentScreen from '../../src/components/features/listAppointment';
+import MyDocumentViewScreen from '../../src/components/features/myDocumentView';
+import MyDocumentAddScreen from '../../src/components/features/myDocumentAdd';
+import PatientDetails from '../../src/components/features/patientDetails';
+import ReportsView from '../../src/components/features/reportsView';
+import HealthDetailsView from '../../src/components/features/healthDetailsView';
+import BillingView from '../../src/components/features/billingView';
+import ReportsAdd from '../../src/components/features/reportsAdd';
+import HealthDetailsAdd from '../../src/components/features/healthDetailsAdd';
+import BillingAdd from '../../src/components/features/billsAdd';
+import ViewOffers from '../../src/components/features/viewOffers';
+import ViewHealthTips from '../../src/components/features/viewHealthTips';
 import Information from '../../src/components/features/information';
 import {ScreenNames} from './constants';
 import Home from '../components/home';
@@ -50,6 +67,10 @@ export const Auth: React.FC = () => {
         component={ForgotPassword}
       />
       <Stack.Screen
+        name={ScreenNames.ForgotPasswordHospital}
+        component={ForgotPasswordHospital}
+      />
+      <Stack.Screen
         name={ScreenNames.ResetPassword}
         component={ResetPassword}
       />
@@ -64,6 +85,7 @@ const HomeStack: React.FC = () => {
     logedInUser.slice(0, 1).toUpperCase() +
     logedInUser.slice(1, logedInUser.length);
   let displayUser = 'WELCOME, ' + displayName;
+
   const getUserDetails = async () => {
     const userId = await getUserId();
     const userName = await getUserName();
@@ -125,12 +147,163 @@ const HomeStack: React.FC = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name={ScreenNames.ForgotPasswordHospital}
+        component={ForgotPasswordHospital}
+        options={{
+          headerShown: false,
+        }}
+      />
 
       <Stack.Screen
         name={ScreenNames.ResetPassword}
         component={ResetPassword}
         options={{
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.PatientDetailsScreen}
+        component={PatientDetails}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.ViewOffersScreen}
+        component={ViewOffers}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.ViewHealthTips}
+        component={ViewHealthTips}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.ReportsViewScreen}
+        component={ReportsView}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.HealthDetailsViewScreen}
+        component={HealthDetailsView}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.BillingViewScreen}
+        component={BillingView}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.ReportsAddScreen}
+        component={ReportsAdd}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.HealthdetailsAddScreen}
+        component={HealthDetailsAdd}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.BillingAddScreen}
+        component={BillingAdd}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
         }}
       />
 
@@ -230,6 +403,112 @@ const HomeStack: React.FC = () => {
         }}
       />
 
+      <Stack.Screen
+        name={ScreenNames.MoreScreen}
+        component={MoreScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.ReminderScreen}
+        component={ReminderScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNames.CreateReminderScreen}
+        component={CreateReminderScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNames.BookAppointmentScreen}
+        component={BookAppointmentScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNames.ListAppointmentScreen}
+        component={ListAppointmentScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNames.MyDocumentViewScreen}
+        component={MyDocumentViewScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNames.MyDocumentAddScreen}
+        component={MyDocumentAddScreen}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
       <Stack.Screen
         name={ScreenNames.EditProfile}
         component={EditProfile}

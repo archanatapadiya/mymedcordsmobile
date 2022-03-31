@@ -20,6 +20,8 @@ import {resetPassword} from '../../utils/api';
 import {App, Auth} from '../../navigator/app-navigator';
 import {saveUserId, saveUserName, saveToken, getUserId} from '../../utils/api';
 import PageLogo from '../pageLogo';
+import {Alert} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const onResetPass = async (
   new_password: string,
@@ -27,7 +29,11 @@ const onResetPass = async (
   navigation: any,
 ) => {
   const res = await resetPassword(new_password, resetUserId);
+
   if (res?.data?.is_success) {
+    Alert.alert('Alert', 'Password changed successfully', [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
     navigation.navigate(ScreenNames.LoginScreen);
   }
 };
@@ -37,6 +43,11 @@ const Header = () => {
   const [resetUserId, setResetUserId] = useState('');
   const image = require('./../../assets/logo/background.jpeg');
 
+  const [visible, setVisibility] = useState(true);
+
+  const eyeIcon = () => {
+    setVisibility(!visible);
+  };
   const getUserDetails = async () => {
     const userId = await getUserId();
     setResetUserId(userId);
@@ -80,17 +91,43 @@ const Header = () => {
                           Please enter your new password
                         </Text>
 
-                        <TextInput
-                          secureTextEntry={true}
-                          defaultValue={formikProps.values.new_password}
-                          placeholder="New Password"
-                          style={[Styles.inputLabel1, Styles.textStyle]}
-                          // keyboardType="email-address"
-                          onChangeText={formikProps.handleChange(
-                            'new_password',
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            marginLeft: -20,
+                            justifyContent: 'center',
+                          }}>
+                          <TextInput
+                            secureTextEntry={visible}
+                            defaultValue={formikProps.values.new_password}
+                            placeholder="New Password"
+                            style={[Styles.inputLabel1, Styles.textStyle]}
+                            // keyboardType="email-address"
+                            onChangeText={formikProps.handleChange(
+                              'new_password',
+                            )}
+                            onBlur={formikProps.handleBlur('new_password')}
+                          />
+
+                          {visible ? (
+                            <MaterialCommunityIcons
+                              onPress={() => eyeIcon()}
+                              name="eye"
+                              color="#0F577C"
+                              size={20}
+                              style={{marginLeft: '-10%', marginTop: 12}}
+                            />
+                          ) : (
+                            <MaterialCommunityIcons
+                              onPress={() => eyeIcon()}
+                              name="eye-off"
+                              color="#0F577C"
+                              size={20}
+                              style={{marginLeft: '-10%', marginTop: 12}}
+                            />
                           )}
-                          onBlur={formikProps.handleBlur('new_password')}
-                        />
+                        </View>
                         <Text style={Styles.formErrorMessage}>
                           {formikProps.touched.new_password &&
                             formikProps.errors.new_password}

@@ -21,6 +21,10 @@ const Logout: React.FC = () => {
     }
   };
 
+  const onMore = async () => {
+    navigation.navigate(ScreenNames.MoreScreen);
+  };
+
   const getUserDetails = async () => {
     const userId = await getUserId();
     setLoggedInUserId(userId);
@@ -53,7 +57,7 @@ const Logout: React.FC = () => {
 
   return (
     <View style={Styles.container}>
-      <MaterialCommunityIcons
+      {/* <MaterialCommunityIcons
         onPress={() =>
           navigation.navigate(ScreenNames.AccountScreen, {userData: userData})
         }
@@ -65,6 +69,14 @@ const Logout: React.FC = () => {
       <MaterialCommunityIcons
         onPress={() => onLogout()}
         name="logout"
+        color={Colors.white}
+        size={30}
+        style={{marginLeft: 10}}
+      /> */}
+
+      <MaterialCommunityIcons
+        onPress={() => onMore()}
+        name="more"
         color={Colors.white}
         size={30}
         style={{marginLeft: 10}}
