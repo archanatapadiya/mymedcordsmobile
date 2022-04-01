@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../../navigator/constants';
 import { login, hosplogin } from '../../../utils/api';
 import { App, Auth } from '../../../navigator/app-navigator';
-import { saveUserId, saveUserName, saveToken, saveUserType, saveHospitalType } from '../../../utils/api';
+import { saveUserId, saveUserName, saveUserFcm,getUserFcm,  saveToken, saveUserType, saveHospitalType } from '../../../utils/api';
 import RNRestart from 'react-native-restart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -45,26 +45,27 @@ const validationSchema = yup.object().shape({
 
 const onLogin = async (email: string, password: string, navigation: any, selectedUserType: string) => {
 
+
   const checkToken = async () => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
-       console.log(fcmToken);
+      await saveUserFcm(fcmToken);
     }
    };
 
+   checkToken();
 
   let res;
   if (selectedUserType == 'Patient'){
-   res = await login(email, password);
-   console.log('res in login', res);
+   let fcm = await getUserFcm();
+   res = await login(email, password, fcm);
    if (res?.is_success) {
-    checkToken();
     createChannel();
     const saveUser = await saveUserId(res?.data?.user_id);
     const saveLoggedUserName = await saveUserName(res?.data?.first_name);
     const saveUserToken = await saveToken(res?.data?.token);
     const userType = await saveUserType(selectedUserType);
-    // RNRestart.Restart();
+    RNRestart.Restart();
   }
   }
   if (selectedUserType == 'Health Center'){
@@ -90,6 +91,7 @@ const onLogin = async (email: string, password: string, navigation: any, selecte
 
 const Header = () => {
   const [visible, setVisibility] = useState(true);
+
   const navigation = useNavigation();
   const [selectedUserType, setSelectedUserType] = useState('Patient');
   const userType = ['Patient', 'Health Center'];

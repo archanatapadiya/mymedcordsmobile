@@ -29,6 +29,13 @@ export const saveUserName = async (user_name: string) => {
   );
 };
 
+export const saveUserFcm = async (fcmToken: string) => {
+  await AsyncStorage.setItem(
+    Constants.STORAGE_ITEM_USERFCM,
+    JSON.stringify(fcmToken),
+  );
+};
+
 export const saveSearchedUserId = async (id: any) => {
   await AsyncStorage.setItem(
     Constants.STORAGE_ITEM_SEARCHED_USER_ID,
@@ -79,6 +86,14 @@ export const getUserName = async () => {
   return userName ? JSON.parse(userName) : null;
 };
 
+export const getUserFcm = async () => {
+  let userFcm = await AsyncStorage.getItem(
+    Constants.STORAGE_ITEM_USERFCM,
+    null,
+  );
+  return userFcm ? JSON.parse(userFcm) : null;
+};
+
 export const getUserType = async () => {
   let userType = await AsyncStorage.getItem(
     Constants.STORAGE_ITEM_USER_TYPE,
@@ -92,11 +107,13 @@ export const getToken = async () => {
   return token ? JSON.parse(token) : null;
 };
 
-export const login = async (email: string, password: string) => {
+export const login = async (email: string, password: string, fcm: string) => {
   try {
+    console.log('email, pass, fcm', email, password, fcm);
     const response = await unprotectedAxios.post('/user_login/', {
       username: email,
       password: password,
+      fcm_token: fcm,
     });
     return response.data;
   } catch (error) {

@@ -12,6 +12,7 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 import {
   Colors,
@@ -62,8 +63,17 @@ const App = () => {
     return userName;
   };
 
+  const checkToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log(fcmToken);
+    }
+  };
+
   useEffect(() => {
     const userName = getUserDetails();
+
+    checkToken();
     return () => console.log('hello world');
   }, []);
 

@@ -65,4 +65,6 @@ export const Constants = {
   STORAGE_ITEM_USER_TYPE: 'user_type',
   STORAGE_ITEM_SEARCHED_USER_ID: 'searched_user_id',
   STORAGE_ITEM_HOSPITAL_TYPE: 'hospital_type',
+  STORAGE_ITEM_USERFCM: 'user_fcm',
+
 }
