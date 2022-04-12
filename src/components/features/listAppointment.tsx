@@ -33,6 +33,7 @@ import Styles from './login/styles';
 import {
   LocalNotification,
   LocalNotificationSchedule,
+  getScheduledNotification,
 } from '../../services/localPushController';
 
 import moment from 'moment';
@@ -46,6 +47,9 @@ const More = ({ route }) => {
 
   console.log('scheduledAlarms--->', JSON.stringify(alarms[0]?.data));
 
+const getAll = () => {
+  getScheduledNotification();
+};
 
   const deleteIcon = (id) => {
     const deleteReminder = async (id) => {
@@ -164,6 +168,11 @@ var timetest = moment(momentObj).format('hh:mm A');
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#D3ECF9' }}  onPress={() => navigate(ScreenNames.BookAppointmentScreen)}>
             ADD NEW REMINDER
           </Text>
+
+          {/* <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#D3ECF9' }}  onPress={() => getAll()}>
+            Get All Notif
+          </Text> */}
+
         </View>
       </View>
 

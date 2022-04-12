@@ -1,4 +1,5 @@
 import PushNotification, {Importance} from 'react-native-push-notification';
+import moment from 'moment';
 
 var i = 10;
 
@@ -12,18 +13,19 @@ PushNotification.configure({
   requestPermissions: true,
 });
 
+function increment(n) {
+  n++;
+  return n;
+}
+
+i = increment(i);
+
+let channelNo = `channel-id${i}`;
+
 export const createChannel = () => {
-  function increment(n) {
-    n++;
-    return n;
-  }
-
-  i = increment(i);
-
-  let channelNo = `channel-id${i}`;
   PushNotification.createChannel(
     {
-      channelId: channelNo, // (required)
+      channelId: 'channel-id', // (required)
       channelName: 'My channel', // (required)
       channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
       playSound: false, // (optional) default: true
@@ -36,6 +38,8 @@ export const createChannel = () => {
 };
 
 export const LocalNotification = () => {
+  console.log('in local notification schedule, firedate');
+
   PushNotification.localNotification({
     autoCancel: true,
     title: 'Reminder',
@@ -51,8 +55,14 @@ export const LocalNotificationSchedule = (
   fireDate: any,
   alarmNotifData: any,
 ) => {
+  var currDate = new Date();
+
+  if (fireDate < currDate) {
+    fireDate = new Date(fireDate.setDate(fireDate.getDate() + 8));
+  }
+
   PushNotification.localNotificationSchedule({
-    channelId: 'channel-id1',
+    channelId: 'channel-id',
     autoCancel: true,
     title: alarmNotifData.message,
     subtitle: alarmNotifData.data.doctor,
@@ -64,19 +74,17 @@ export const LocalNotificationSchedule = (
     date: fireDate,
     repeatType: 'time',
     repeatTime: 7 * 86400000,
+    // repeatTime: 3000,
   });
 };
-
-// function callback = () => {
-//   console.log('notification array received');
-// }
-
-// export const getScheduledNotification = () => {
-
-//   PushNotification.getScheduledLocalNotifications(callback);
-// };
 
 export const cancelNotification = () => {
   PushNotification.cancelAllLocalNotifications();
   console.log('notification cleared');
+};
+
+export const getScheduledNotification = () => {
+  PushNotification.getScheduledLocalNotifications(nots => {
+    console.log(nots);
+  });
 };

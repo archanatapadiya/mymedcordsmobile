@@ -30,7 +30,7 @@ import CallHospital from '../callHosp';
 const History = ({route}) => {
   const {hospName, logo, hospitalId, phoneNumber} = route.params;
 
-  console.log('phonenumber in history', phoneNumber);
+  console.log('phonenumber in history');
   return (
     <SafeAreaView>
       <StatusBar />

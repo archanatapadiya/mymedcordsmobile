@@ -15,7 +15,12 @@ import {Button, Snackbar} from 'react-native-paper';
 
 import {navigate, push} from '../../navigator/NavigationService';
 import {ScreenNames} from '../../navigator/constants';
-import {getUserReports, getUserId, addUserReports} from '../../utils/api';
+import {
+  getUserReports,
+  getUserId,
+  addUserReports,
+  checkSpace,
+} from '../../utils/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PageLogo from '../pageLogo';
 import {Formik} from 'formik';
@@ -61,6 +66,8 @@ function useInput() {
 }
 
 const Reports = ({route}) => {
+  // const {reportCount} = route?.params;
+
   const image = require('./../../assets/logo/background.jpeg');
 
   const input = useInput(new Date());
@@ -71,8 +78,14 @@ const Reports = ({route}) => {
   let reportsData: any = [];
 
   const [singleFile, setSingleFile] = useState('');
+  const [reportCount, setReportCount] = useState(0);
 
   console.log('valuesim handle submit  singleFile', singleFile[0]?.size);
+
+  const checkSpaceUtil = async (loggedInUserId: any) => {
+    const space = await checkSpace(loggedInUserId);
+    setReportCount(space?.data?.data);
+  };
 
   const getUserDetails = async () => {
     const userId = await getUserId();
@@ -109,6 +122,10 @@ const Reports = ({route}) => {
     const userId = getUserDetails();
   }, []);
 
+  useEffect(() => {
+    const space1 = checkSpaceUtil(loggedInUserId);
+  }, [loggedInUserId]);
+
   return (
     <ImageBackground
       source={image}
@@ -121,7 +138,7 @@ const Reports = ({route}) => {
             margin: 20,
           }}>
           <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
-            SPACE: 27MB / 50MB
+            SPACE: {reportCount} / 50
           </Text>
         </View>
       </View>

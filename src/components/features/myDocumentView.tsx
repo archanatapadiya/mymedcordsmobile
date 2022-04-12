@@ -124,7 +124,11 @@ const Reports = ({route}) => {
 
       <View style={{flexDirection: 'row'}}>
         <MaterialCommunityIcons
-          onPress={() => navigate(ScreenNames.MyDocumentAddScreen)}
+          onPress={() =>
+            navigate(ScreenNames.MyDocumentAddScreen, {
+              reportCount: reportCount,
+            })
+          }
           name="plus-circle"
           color="#D3ECF9"
           size={30}

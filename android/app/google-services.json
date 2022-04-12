@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "91406855670-kllq64ck9d8i8cj0btk9m7av1i0imdp0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hospiuser",
+            "certificate_hash": "73b78cb8dc6dbcb456c853a61d66d691d013c61b"
+          }
+        },
+        {
           "client_id": "91406855670-dkqcfnvfsnddd2957ilptvk52gbgar6v.apps.googleusercontent.com",
           "client_type": 3
         }
