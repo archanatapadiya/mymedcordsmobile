@@ -151,87 +151,135 @@ const Reports = ({route}) => {
         <View />
         {userReportList?.length != 0 && userReportList !== undefined ? (
           <View style={{paddingLeft: 20, paddingRight: 20}}>
-            <DataTable
-              style={{
-                borderWidth: 2,
-                borderColor: '#0A4A6B',
-              }}>
-              <DataTable.Header
+            <ScrollView horizontal>
+              <DataTable
                 style={{
-                  // paddingLeft: 50,
-                  // paddingRight: 30,
-                  borderBottomWidth: 2,
-                  backgroundColor: '#C7E7F8',
+                  borderWidth: 2,
+                  borderColor: '#0A4A6B',
                 }}>
-                <DataTable.Title>
-                  <Text
+                <DataTable.Header
+                  style={{
+                    // paddingLeft: 50,
+                    // paddingRight: 30,
+                    borderBottomWidth: 2,
+                    backgroundColor: '#C7E7F8',
+                  }}>
+                  <DataTable.Title
                     style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#228EC7',
+                      width: 100,
                     }}>
-                    Date
-                  </Text>
-                </DataTable.Title>
-
-                <DataTable.Title>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#228EC7',
-                    }}>
-                    Doctor{' '}
-                  </Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#228EC7',
-                    }}>
-                    Report Date
-                  </Text>
-                </DataTable.Title>
-                <DataTable.Title numeric>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 'bold',
-                      color: '#228EC7',
-                    }}>
-                    Reports{' '}
-                  </Text>
-                </DataTable.Title>
-              </DataTable.Header>
-
-              {userReportList?.map((u, i) => {
-                return (
-                  <View key={i}>
-                    <DataTable.Row
+                    <Text
                       style={{
-                        // paddingLeft: 30,
-                        // paddingRight: 30,
-                        backgroundColor: '#67C2F1',
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
                       }}>
-                      <DataTable.Cell>{u.event_time}</DataTable.Cell>
+                      Date
+                    </Text>
+                  </DataTable.Title>
 
-                      <DataTable.Cell>{u.dr_name}</DataTable.Cell>
-                      <DataTable.Cell>{u.testdate}</DataTable.Cell>
+                  <DataTable.Title
+                    style={{
+                      width: 100,
+                      paddingLeft: 20,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
+                      }}>
+                      Doctor{' '}
+                    </Text>
+                  </DataTable.Title>
+                  <DataTable.Title
+                    style={{
+                      width: 100,
+                      paddingLeft: 20,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
+                      }}>
+                      Report Date
+                    </Text>
+                  </DataTable.Title>
+                  <DataTable.Title
+                    numeric
+                    style={{
+                      width: 100,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
+                      }}>
+                      Reports{' '}
+                    </Text>
+                  </DataTable.Title>
+                </DataTable.Header>
 
-                      <DataTable.Cell numeric>
-                        <Text
-                          style={{color: 'blue'}}
-                          onPress={() => Linking.openURL(u.file_url)}>
-                          {u.file_name}
-                        </Text>
-                      </DataTable.Cell>
-                    </DataTable.Row>
-                  </View>
-                );
-              })}
-            </DataTable>
+                {userReportList?.map((u, i) => {
+                  return (
+                    <View key={i}>
+                      <DataTable.Row
+                        style={{
+                          // paddingLeft: 30,
+                          // paddingRight: 30,
+                          backgroundColor: '#67C2F1',
+                        }}>
+                        <DataTable.Cell
+                          style={{
+                            borderRightWidth: 2,
+                            borderColor: '#0A4A6B',
+                            width: 150,
+                            padding: 20,
+                          }}>
+                          {u.event_time}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell
+                          style={{
+                            borderRightWidth: 2,
+                            borderColor: '#0A4A6B',
+                            width: 150,
+                            padding: 20,
+                          }}>
+                          {u.dr_name}
+                        </DataTable.Cell>
+                        <DataTable.Cell
+                          style={{
+                            borderRightWidth: 2,
+                            borderColor: '#0A4A6B',
+                            width: 150,
+                            padding: 20,
+                          }}>
+                          {u.testdate}
+                        </DataTable.Cell>
+
+                        <DataTable.Cell
+                          numeric
+                          style={{
+                            // borderRightWidth: 2,
+                            // borderColor: '#0A4A6B',
+                            width: 150,
+                            padding: 20,
+                          }}>
+                          <Text
+                            style={{color: 'blue'}}
+                            onPress={() => Linking.openURL(u.file_url)}>
+                            {u.file_name}
+                          </Text>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    </View>
+                  );
+                })}
+              </DataTable>
+            </ScrollView>
           </View>
         ) : (
           <Text

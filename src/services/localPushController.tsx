@@ -67,6 +67,7 @@ export const LocalNotificationSchedule = (
     title: alarmNotifData.message,
     subtitle: alarmNotifData.data.doctor,
     message: alarmNotifData.title,
+    allowWhileIdle: true,
     vibrate: true,
     vibration: 300,
     playSound: true,

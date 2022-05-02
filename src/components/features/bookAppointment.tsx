@@ -85,9 +85,10 @@ const More = ({ route }) => {
   };
 
   const handleButtonPress = async (values: any) => {
-    const fireDate = moment(date).add(1, 'days').format('DD-MM-yyyy hh:mm:ss');
 
-    console.log('fireDate', fireDate);
+    const fireDate = moment(date).add(1, 'days').format('DD-MM-yyyy HH:mm:ss');
+
+    console.log('fireDate',date,  fireDate);
 
     let temp1 = products.filter(function (el) {
       return el.isChecked == true;
@@ -98,7 +99,7 @@ const More = ({ route }) => {
     const alarmNotifData = {
       title: values.reminder,
       message: 'Reminder',
-      channel: 'my_channel_id',
+      channel: 'channel_id',
       small_icon: 'ic_launcher',
       data: { selectedDays: temp },
     };
@@ -112,6 +113,24 @@ const More = ({ route }) => {
 
     // LocalNotificationSchedule(date, alarmNotifData);
 
+
+
+    // var s1 = new Date();
+    // var st = moment(s1).add(5, 'minutes');
+
+    // var s2 = new Date(st);
+
+    // let selectDays1 = [s1, s2];
+
+
+    // {
+    //   selectDays1?.map((u, i) => {
+
+
+    //       console.log('datettt1', u);
+    //       LocalNotificationSchedule(u, alarmNotifData);
+    //     });
+    //   }
 
     let selectDays = temp1.map((a) => a.id);
 
@@ -131,6 +150,7 @@ const More = ({ route }) => {
           var dateTime = moment(momentObj).format('MMM DD YYYY HH:mm:ss');
 
           var datettt = new Date(dateTime);
+
 
           console.log('datettt', datettt);
           LocalNotificationSchedule(datettt, alarmNotifData);

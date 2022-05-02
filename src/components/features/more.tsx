@@ -91,26 +91,26 @@ const More = ({route}) => {
       />
             <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.AccountScreen, {userData: userData})}>{' '} PROFILE </Text>{' '}   {'\n\n'}
 
-            <MaterialCommunityIcons
+            {/* <MaterialCommunityIcons
         name="arrow-right-circle"
         color={Colors.white}
         size={30}
       />
 
-            <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.ListAppointmentScreen)}>{' '} REMINDERS </Text>{' '}  {'\n\n'}
+            <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.ListAppointmentScreen)}>{' '} REMINDERS </Text>{' '}  {'\n\n'} */}
 
-            <MaterialCommunityIcons
+            {/* <MaterialCommunityIcons
         name="arrow-right-circle"
         color={Colors.white}
         size={30}
       />
-            <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.ViewHealthTips)}>{' '} HEALTH TIPS AND INFORMATION</Text>{' '}  {'\n\n'}
-            <MaterialCommunityIcons
+            <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.ViewHealthTips)}>{' '} HEALTH TIPS AND INFORMATION</Text>{' '}  {'\n\n'} */}
+            {/* <MaterialCommunityIcons
         name="arrow-right-circle"
         color={Colors.white}
         size={30}
       />
-            <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.ViewOffersScreen)}>{' '} OFFERS </Text>{' '}  {'\n\n'}
+            <Text style={{fontWeight: 'bold'}} onPress={() => navigation.navigate(ScreenNames.ViewOffersScreen)}>{' '} OFFERS </Text>{' '}  {'\n\n'} */}
             </Text>
            )}
             <MaterialCommunityIcons
