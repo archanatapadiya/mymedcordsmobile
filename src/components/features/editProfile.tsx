@@ -25,6 +25,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { editProfile, saveUserName } from './../../utils/api';
 import PageLogo from '../pageLogo';
 import UploadImage from './uploadImage';
+import RNRestart from 'react-native-restart';
 
 interface BillingData {
   amount: string;
@@ -55,7 +56,7 @@ const Billing = ({route}) => {
     // }
 
     if (res?.is_success){
-      // console.log('res123123', res);
+      console.log('res123123', res);
       // const saveLoggedUserName = await saveUserName(res?.data?.first_name);
       navigation.navigate(ScreenNames.AccountScreen);
     }

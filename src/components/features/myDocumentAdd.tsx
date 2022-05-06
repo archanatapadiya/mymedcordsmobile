@@ -80,7 +80,7 @@ const Reports = ({route}) => {
   const [singleFile, setSingleFile] = useState('');
   const [reportCount, setReportCount] = useState(0);
 
-  console.log('valuesim handle submit  singleFile', singleFile[0]?.size);
+  console.log('valuesim handle submit  singleFile', singleFile);
 
   const checkSpaceUtil = async (loggedInUserId: any) => {
     const space = await checkSpace(loggedInUserId);
@@ -101,6 +101,8 @@ const Reports = ({route}) => {
     let loggedInUserId1 = null;
     let is_user_upload = true;
 
+    let singleFileToPass = singleFile[0] ? singleFile[0] : singleFile;
+
     const reportupload = await addUserReports(
       values,
       input2,
@@ -109,7 +111,7 @@ const Reports = ({route}) => {
       searchedUserId,
       loggedInHospType,
       is_user_upload,
-      singleFile[0],
+      singleFileToPass,
     );
 
     if (reportupload?.ok) {
@@ -138,7 +140,7 @@ const Reports = ({route}) => {
             margin: 20,
           }}>
           <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
-            SPACE: {reportCount} / 50
+            REPORTS: {reportCount} / 50
           </Text>
         </View>
       </View>
@@ -245,7 +247,7 @@ const Reports = ({route}) => {
                       color: '#D3ECF9',
                       marginTop: 10,
                     }}>
-                    File Name
+                    Type Of Document / Modality
                   </Text>
                   <TextInput
                     style={styles.input}

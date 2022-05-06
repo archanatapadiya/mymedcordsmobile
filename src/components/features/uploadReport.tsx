@@ -16,11 +16,24 @@ import axios from 'axios';
 import {Button, Snackbar} from 'react-native-paper';
 import Styles from './login/styles';
 import DocumentPicker from 'react-native-document-picker';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Colors} from 'react-native-paper';
 
 export default function UploadImage(params: any) {
   console.log('params in uploadreport-->', params);
 
   const userId = params?.userData?.user_id;
+
+  const captureImage = async () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      params.setSingleFile(image);
+      console.log('image captured', image);
+    });
+  };
 
   const addImage = async () => {
     try {
@@ -28,7 +41,7 @@ export default function UploadImage(params: any) {
         type: [DocumentPicker.types.allFiles],
       });
       //Printing the log realted to the file
-      console.log('res : ' + JSON.stringify(res));
+      console.log('res111 : ' + JSON.stringify(res));
       console.log('URI : ' + res?.uri);
       console.log('Type : ' + res?.type);
       console.log('File Name : ' + res?.name);
@@ -36,12 +49,12 @@ export default function UploadImage(params: any) {
 
       //Setting the state to show single file attributes
       {
-        res[0]?.size < 1000000 && params.setSingleFile(res);
+        res[0]?.size < 5000000 && params.setSingleFile(res);
       }
       {
-        res[0]?.size > 1000000 &&
+        res[0]?.size > 5000000 &&
           alert(
-            `Max file size exceeded (1 MB). 
+            `Max file size exceeded (5 MB). 
 Your file size is` +
               (Math.round((res[0]?.size / 1000000) * 100) / 100).toFixed(2) +
               ' MB',
@@ -63,15 +76,33 @@ Your file size is` +
   return (
     <View>
       <View>
-        <Button
-          color="#fff"
-          onPress={addImage}
-          mode="contained"
-          labelStyle={Styles.nextButtonText1}
-          style={Styles.nextButtonContainer1}>
-          {'  '}Select a file to upload{'  '}
-        </Button>
-        <Text style={Styles.nextButtonText1}>{params.singleFile[0]?.name}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <MaterialCommunityIcons
+            onPress={captureImage}
+            name="camera"
+            color={Colors.white}
+            size={40}
+            style={{marginLeft: 10, marginTop: 20, marginRight: 20}}
+          />
+          <Button
+            color="#fff"
+            onPress={addImage}
+            mode="contained"
+            labelStyle={Styles.nextButtonText1}
+            style={Styles.nextButtonContainer1}>
+            {'  '}Select a file to upload{'  '}
+          </Button>
+        </View>
+
+        <Text style={Styles.nextButtonText1}>
+          {params.singleFile[0]?.name
+            ? params.singleFile[0]?.name
+            : params.singleFile.mime}
+        </Text>
         {params.singleFile[0]?.size && (
           <Text style={Styles.nextButtonText1}>
             {(

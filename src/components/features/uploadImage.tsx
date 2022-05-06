@@ -18,6 +18,7 @@ export default function UploadImage(params: any) {
   const [image, setImage] = useState(null);
   const userDetails = params?.userData;
   const userId = params?.userData?.user_id;
+
   const addImage = async () => {
     ImagePicker.openPicker({
       width: 300,

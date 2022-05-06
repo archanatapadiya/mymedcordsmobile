@@ -199,7 +199,7 @@ const Header = () => {
                               color: '#D3ECF9',
                             }}
                           >
-                            USERNAME
+                           {selectedUserType == 'Health Center' ? '  EMAIL ID   ' : 'MOBILE NO'}
                           </Text>
                           <TextInput
                             defaultValue={formikProps.values.email}

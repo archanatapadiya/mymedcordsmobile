@@ -117,7 +117,7 @@ const Reports = ({route}) => {
             margin: 20,
           }}>
           <Text style={{fontSize: 18, fontWeight: 'bold', color: '#D3ECF9'}}>
-            SPACE: {reportCount} / 50
+            REPORTS: {reportCount} / 50
           </Text>
         </View>
       </View>
@@ -167,9 +167,9 @@ const Reports = ({route}) => {
       </View>
 
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <View />
+        {/* <View /> */}
         {userReportList?.length != 0 && userReportList !== undefined ? (
-          <View style={{paddingLeft: 20, paddingRight: 20}}>
+          <View style={{paddingLeft: 5, paddingRight: 5}}>
             <ScrollView horizontal>
               <DataTable
                 style={{
@@ -185,7 +185,7 @@ const Reports = ({route}) => {
                   }}>
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      width: 80,
                     }}>
                     <Text
                       style={{
@@ -199,7 +199,7 @@ const Reports = ({route}) => {
 
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      width: 70,
                     }}>
                     <Text
                       style={{
@@ -207,12 +207,13 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
+                      {' '}
                       Doctor{' '}
                     </Text>
                   </DataTable.Title>
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      width: 80,
                     }}>
                     <Text
                       style={{
@@ -225,7 +226,7 @@ const Reports = ({route}) => {
                   </DataTable.Title>
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      width: 80,
                     }}>
                     <Text
                       style={{
@@ -251,8 +252,8 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            width: 90,
+                            padding: 5,
                           }}>
                           {u.event_time}
                         </DataTable.Cell>
@@ -261,8 +262,8 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            width: 80,
+                            padding: 5,
                           }}>
                           {u.dr_name}
                         </DataTable.Cell>
@@ -270,8 +271,8 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            width: 90,
+                            padding: 5,
                           }}>
                           {u.testdate}
                         </DataTable.Cell>
@@ -280,8 +281,8 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            width: 60,
+                            padding: 5,
                           }}>
                           <Text
                             style={{color: 'blue'}}

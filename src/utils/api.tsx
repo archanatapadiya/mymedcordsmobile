@@ -124,7 +124,7 @@ export const login = async (email: string, password: string, fcm: string) => {
 export const hosplogin = async (email: string, password: string) => {
   try {
     const response = await unprotectedAxios.post('/hospital_login/', {
-      username: email,
+      username: email.toLowerCase(),
       password: password,
     });
     return response.data;
@@ -475,10 +475,12 @@ export const addUserReports = async (
   singleFile: any,
 ) => {
   var photo = {
-    uri: singleFile.uri,
-    type: singleFile.type,
-    name: singleFile.name,
+    uri: singleFile.uri ? singleFile.uri : singleFile?.path,
+    type: singleFile.type ? singleFile.type : singleFile?.mime,
+    name: singleFile.name ? singleFile.name : 'photo1.jpg',
   };
+
+  console.log('in add ueer reprot api', singleFile);
 
   let token = await AsyncStorage.getItem(Constants.STORAGE_ITEM_TOKEN, null);
 
