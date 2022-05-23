@@ -160,11 +160,11 @@ const Header = () => {
                             <Text
                               style={{
                                 marginTop: 5,
-                                fontSize: 18,
+                                // fontSize: 18,
                                 fontWeight: 'bold',
                                 color: '#D3ECF9',
                               }}>
-                              Patient
+                              PATIENT
                             </Text>
                             <RadioButton value="Patient" />
                           </View>
@@ -172,11 +172,11 @@ const Header = () => {
                             <Text
                               style={{
                                 marginTop: 5,
-                                fontSize: 18,
+                                // fontSize: 18,
                                 fontWeight: 'bold',
                                 color: '#D3ECF9',
                               }}>
-                              Health Center
+                              HEALTH CENTER
                             </Text>
                             <RadioButton value="Health Center" />
                           </View>
@@ -188,7 +188,7 @@ const Header = () => {
                         <View
                           style={{
                             flexDirection: 'row',
-                            marginTop: 60,
+                            marginTop: 30,
                             justifyContent: 'center',
                           }}
                         >
@@ -284,7 +284,7 @@ const Header = () => {
                           size={50}
                           style={{
                             marginTop: '-8%',
-                            marginLeft: '28%',
+                            marginLeft: '33%',
                             width: 50,
                           }}
                         />
@@ -308,7 +308,7 @@ const Header = () => {
           bottom: 0,
         }}
       >
-        <Text style={{ color: '#D3ECF9' }}>v1.0</Text>
+        <Text style={{ color: '#D3ECF9' }}>v2.0</Text>
         <Text style={{ color: '#D3ECF9' }}>MEDCLINIQ</Text>
       </View>
     </ImageBackground>

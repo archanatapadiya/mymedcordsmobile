@@ -36,10 +36,10 @@ export default function UploadImage(params: any) {
 
       //Setting the state to show single file attributes
       {
-        res[0]?.size < 100000 && params.setSingleFile(res);
+        res[0]?.size < 500000 && params.setSingleFile(res);
       }
       {
-        res[0]?.size > 100000 &&
+        res[0]?.size > 500000 &&
           alert(
             `Max file size exceeded (100 KB). 
 Your file size is` +

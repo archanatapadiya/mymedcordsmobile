@@ -16,6 +16,7 @@ import Billing from '../../src/components/features/billing';
 import Reports from '../../src/components/features/reports';
 import Updates from '../../src/components/features/updates';
 import EditProfile from '../../src/components/features/editProfile';
+import AddNewUser from '../../src/components/features/addNewUser';
 import AccountScreen from '../../src/components/features/account';
 import MoreScreen from '../../src/components/features/more';
 import ReminderScreen from '../../src/components/features/reminder';
@@ -198,6 +199,22 @@ const HomeStack: React.FC = () => {
       <Stack.Screen
         name={ScreenNames.ViewHealthTips}
         component={ViewHealthTips}
+        options={{
+          headerLeft: () => <Home />,
+          headerRight: () => <Logout />,
+          title: displayUser,
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStatusBarHeight: 12,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.AddNewUser}
+        component={AddNewUser}
         options={{
           headerLeft: () => <Home />,
           headerRight: () => <Logout />,

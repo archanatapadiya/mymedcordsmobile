@@ -29,6 +29,7 @@ import moment from 'moment';
 import Styles from './login/styles';
 import UploadReport from './uploadReport';
 import {Alert} from 'react-native';
+import * as yup from 'yup';
 
 interface ReportData {
   descreption: string;
@@ -38,10 +39,20 @@ interface ReportData {
   event_time: string;
 }
 
+const loginValidationSchema = yup.object().shape({
+  doctor: yup.string().label('doctor').required('Doctor is a required field'),
+  file_name: yup
+    .string()
+    .label('file_name')
+    .required('Type of document is a required field'),
+});
+
 function useInput() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+
+  const [text, setText] = useState('');
 
   const showMode = currentMode => {
     setShow(true);
@@ -170,6 +181,7 @@ const Reports = ({route}) => {
               margin: 20,
             }}>
             <Formik
+              validationSchema={loginValidationSchema}
               initialValues={{
                 description: '',
                 health_center: '',
@@ -177,7 +189,14 @@ const Reports = ({route}) => {
                 file_name: '',
               }}
               onSubmit={values => handleSubmitUpload(values)}>
-              {({handleChange, handleBlur, handleSubmit, values}) => (
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                touched,
+                errors,
+                values,
+              }) => (
                 <View>
                   <Text
                     style={{
@@ -215,7 +234,7 @@ const Reports = ({route}) => {
                       color: '#D3ECF9',
                       marginTop: 10,
                     }}>
-                    Doctor
+                    Doctor*
                   </Text>
                   <TextInput
                     style={styles.input}
@@ -223,6 +242,9 @@ const Reports = ({route}) => {
                     onBlur={handleBlur('doctor')}
                     value={values.doctor}
                   />
+                  <Text style={Styles.formErrorMessage}>
+                    {touched.doctor && errors.doctor}
+                  </Text>
 
                   <Text
                     style={{
@@ -247,7 +269,7 @@ const Reports = ({route}) => {
                       color: '#D3ECF9',
                       marginTop: 10,
                     }}>
-                    Type Of Document / Modality
+                    Type Of Document / Modality*
                   </Text>
                   <TextInput
                     style={styles.input}
@@ -255,6 +277,9 @@ const Reports = ({route}) => {
                     onBlur={handleBlur('file_name')}
                     value={values.file_name}
                   />
+                  <Text style={Styles.formErrorMessage}>
+                    {touched.file_name && errors.file_name}
+                  </Text>
 
                   <Text
                     style={{

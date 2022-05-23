@@ -18,6 +18,7 @@ export const ScreenNames = {
   ForgotPasswordHospital: 'Forgot Password Hospital',
   ResetPassword: 'Reset Password',
   EditProfile: 'Edit Profile',
+  AddNewUser: 'Add New User',
   MoreScreen: 'More',
   ReminderScreen: 'Reminder',
   CreateReminderScreen: 'CreateReminder',
@@ -37,7 +38,7 @@ export const ScreenNames = {
 }
 
 export const API = {
-  SERVER_URL: 'http://3.110.35.199/',
+  SERVER_URL: 'http://3.109.71.28/',
   CONTENT_TYPE: 'application/json',
 }
 

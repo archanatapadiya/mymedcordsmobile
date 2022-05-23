@@ -159,6 +159,38 @@ export const editProfile = async params => {
   }
 };
 
+export const registerUser = async params => {
+  try {
+    console.log('values in api register profile', params);
+    // let dateOfBirth = dayjs(params.dob).format('YYYY-MM-DD');
+
+    const response = await unprotectedAxios.post('user_register/', {
+      // "username": params.username,
+
+      email: params.email,
+      firstname: params.first_name,
+      lastname: params.last_name,
+      password: params.password,
+      address: params.address,
+      phone_number: params.phone_number,
+      zip_code: params.zip_code,
+      dob: params.dateOfBirth,
+      // dob: '2000-06-11',
+      blood_group: params.blood_group,
+      blood_pressure: params.blood_pressure,
+      // bmi: params.bmi,
+      height: params.height,
+      weight: params.weight,
+      pulse: params.pulse,
+      health_id: params.health_id,
+    });
+    console.log('response in api', response);
+    return response.data;
+  } catch (error) {
+    console.log('error in api' + error);
+  }
+};
+
 export const uploadImage = async (params: any) => {
   var photo = {
     uri: params?.image1?.path,
@@ -183,7 +215,7 @@ export const uploadImage = async (params: any) => {
   form.append('health_id', params?.userData?.health_id);
 
   console.log('image in form', params, form);
-  const res = fetch('http://3.110.35.199/update_user_profile/', {
+  const res = fetch('http://3.109.71.28/update_user_profile/', {
     body: form,
     method: 'POST',
     headers: {
@@ -508,6 +540,7 @@ export const addUserReports = async (
   form_data.append('file', photo);
   form_data.append('file_name', values.file_name);
   form_data.append('description', values.description);
+  form_data.append('health_center', values.health_center);
   form_data.append('user_id', searchedUserId);
   form_data.append('hospital_id', loggedInUserId);
   form_data.append('is_opd', opdFlag);
@@ -516,7 +549,7 @@ export const addUserReports = async (
   form_data.append('is_user_upload', is_user_upload);
 
   console.log('form_data in my doc upload', form_data);
-  const res = await fetch('http://3.110.35.199/report_upload/', {
+  const res = await fetch('http://3.109.71.28/report_upload/', {
     body: form_data,
     method: 'POST',
     headers: {
@@ -565,7 +598,7 @@ export const addUserUpdates = async (
   form_data.append('dr_name', values.doctor);
   form_data.append('is_opd', opdFlag);
 
-  const res = await fetch('http://3.110.35.199/user_health_update/', {
+  const res = await fetch('http://3.109.71.28/user_health_update/', {
     body: form_data,
     method: 'POST',
     headers: {
@@ -622,7 +655,7 @@ export const addUserBills = async (
   form_data.append('hospital_id', loggedInUserId);
   form_data.append('is_opd', opdFlag);
 
-  const res = await fetch('http://3.110.35.199/bill_upload/', {
+  const res = await fetch('http://3.109.71.28/bill_upload/', {
     body: form_data,
     method: 'POST',
     headers: {

@@ -268,6 +268,16 @@ const App = () => {
                   <View style={Styles.mainContainer}>
                     <View style={Styles.container}>
                       <View style={Styles.loginContainer}>
+                        <View style={styles.buttonView1}>
+                          <Button
+                            onPress={() => navigate(ScreenNames.AddNewUser)}
+                            mode="contained"
+                            labelStyle={{color: 'white', fontWeight: 'bold'}}
+                            style={{backgroundColor: '#85CFF5'}}>
+                            Add New User
+                          </Button>
+                        </View>
+
                         <Text
                           style={{
                             textAlign: 'center',
@@ -383,6 +393,14 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
 
+  buttonView1: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    marginBottom: 20,
+  },
   buttonView: {
     flex: 1,
     flexDirection: 'row',

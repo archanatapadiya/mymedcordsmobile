@@ -15,6 +15,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import Styles from './login/styles';
+import dayjs from 'dayjs';
 
 import Header from '../header';
 import HospitalHeader from '../hospitalHeader';
@@ -22,10 +23,11 @@ import {navigate, push} from '../../navigator/NavigationService';
 import {ScreenNames} from '../../navigator/constants';
 import {getUserBills, getUserId} from '../../utils/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { editProfile, saveUserName } from './../../utils/api';
+import { editProfile, saveUserName , registerUser} from './../../utils/api';
 import PageLogo from '../pageLogo';
 import UploadImage from './uploadImage';
 import RNRestart from 'react-native-restart';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface BillingData {
   amount: string;
@@ -34,32 +36,67 @@ interface BillingData {
   billing_time: string;
 }
 
-const Billing = ({route}) => {
-  const {userData} = route.params;
+function useInput() {
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const [text, setText] = useState('');
+
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+  return {
+    date,
+    showDatepicker,
+    show,
+    mode,
+    onChange,
+  };
+}
+
+const Billing = () => {
   const navigation = useNavigation();
   const image = require('./../../assets/logo/background.jpeg');
 
-  console.log('userData in edit params', userData);
+  const input2 = useInput(new Date());
+
+      let dateOfBirth = dayjs(input2.date).format('YYYY-MM-DD');
 
   const onLogin = async(values: any, navigation: any) => {
 
-    console.log('values in edit profile', values);
-    let params = {
-      ...values,
-      user_id: userData.user_id,
-    };
-    const res = await editProfile(params);
-    console.log('userData in edit', res);
+    console.log('values in register profile', input2);
 
-    // if (!res?.is_success){
-    //   navigation.navigate(ScreenNames.AccountScreen);
-    // }
+    let params = {
+      ...values , dateOfBirth   };
+    const res = await registerUser(params);
+    console.log('userData in registerUser', res);
+
+    if (!res?.is_success){
+      Alert.alert(
+        'Alert',
+        'Username already exists',
+        [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]
+    );
+    }
 
     if (res?.is_success){
       console.log('res123123', res);
-      const saveLoggedUserName = await saveUserName(res?.data?.name);
-      navigation.navigate(ScreenNames.AccountScreen);
+      navigation.navigate(ScreenNames.HomeScreen);
     }
+
    };
 
   return (
@@ -67,23 +104,27 @@ const Billing = ({route}) => {
     source={image}
     style={{flex: 1, width: null, height: null}}>
       <PageLogo />
+
      <ScrollView>
+
 
     <Formik
       initialValues={{
-        first_name: userData?.first_name || '',
-        last_name: userData?.last_name || '',
-        email:userData?.email || '',
-        address:userData?.address || '',
-        zip_code:(userData?.zip_code)?.toString() || 0,
-        phone_number: userData?.phone_number || '',
-        blood_group: userData?.blood_group || null,
-        blood_pressure: userData?.blood_pressure || null,
-        height: (userData?.height)?.toString() || 0,
-        weight: (userData?.weight)?.toString() || 0,
+        first_name: '',
+        last_name: '',
+        email:'',
+        dob:'',
+        password:'',
+        address:'',
+        zip_code: '',
+        phone_number: '',
+        blood_group: null,
+        blood_pressure: null,
+        height: null,
+        weight: null,
         // bmi: userData?.bmi || null,
-        pulse: (userData?.pulse)?.toString() || 0,
-        health_id: userData?.health_id || null,
+        pulse: null,
+        health_id: null,
       }}
       onSubmit={values => {
        onLogin(values, navigation);
@@ -94,10 +135,17 @@ const Billing = ({route}) => {
           <View style={Styles.mainContainer} >
 
             <View style={Styles.container}>
-              <View style={Styles.loginContainer}>
-              <UploadImage userData={userData} />
+              <View >
 
-
+              <Text
+                          style={{
+                            textAlign: 'center',
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            color: '#D3ECF9',
+                          }}>
+                          ADD NEW USER
+                        </Text>
                 <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}> {'\n\n'}First Name</Text>
                 <TextInput
                   defaultValue={formikProps.values.first_name}
@@ -118,11 +166,51 @@ const Billing = ({route}) => {
                   onBlur={formikProps.handleBlur('last_name')}
                 />
 
+{/* <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Date Of Birth</Text>
+                <TextInput
+
+                  // placeholder="Password"
+                  value={formikProps.values.dob}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('dob')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('dob')}
+                /> */}
+
+<Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      color: '#D3ECF9',
+                      marginTop: 10,
+                    }}>
+                    Date Of Birth: {input2.date.toLocaleDateString()}
+                  </Text>
+
+                  <Button
+                    color="#fff"
+                    onPress={input2.showDatepicker}
+                    mode="contained"
+                    labelStyle={Styles.nextButtonText2}
+                    style={Styles.nextButtonContainer2}>
+                    {'  '}Select Date Of Birth{'  '}
+                  </Button>
+                  {input2.show && (
+                    <DateTimePicker
+                      testID="dateTimePicker2"
+                      value={input2.date}
+                      mode={input2.mode}
+                      is24Hour={true}
+                      display="default"
+                      onChange={input2.onChange}
+                    />
+                  )}
+
+
 <Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Phone Number</Text>
                 <TextInput
 
                   // placeholder="Password"
-                  editable={false}
                   value={formikProps.values.phone_number}
                   style={[Styles.inputLabel, Styles.textStyle]}
                   onChangeText={formikProps.handleChange('phone_number')}
@@ -139,6 +227,17 @@ const Billing = ({route}) => {
                   onChangeText={formikProps.handleChange('email')}
                   maxLength={120}
                   onBlur={formikProps.handleBlur('email')}
+                />
+
+<Text style={{marginLeft: 10, fontSize: 14, color: '#D3ECF9'}}>Password</Text>
+                <TextInput
+                  // secureTextEntry={true}
+                  // placeholder="Password"
+                  value={formikProps.values.password}
+                  style={[Styles.inputLabel, Styles.textStyle]}
+                  onChangeText={formikProps.handleChange('password')}
+                  maxLength={120}
+                  onBlur={formikProps.handleBlur('password')}
                 />
 
 

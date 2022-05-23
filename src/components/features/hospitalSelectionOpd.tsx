@@ -47,7 +47,7 @@ const Current = ({route}) => {
   const image = require('./../../assets/logo/background.jpeg');
   const Logo = require('./../../assets/logo/MyMedCordsTransparent.png');
 
-  console.log('hospitalList', hospitalList?.length);
+  console.log('hospitalList', hospitalList?.length, hospitalListOpd?.length);
   let hospitalListData: any = [];
 
   const userHospitalData = async (userId: any) => {
@@ -105,7 +105,7 @@ const Current = ({route}) => {
         </View>
       </View>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {hospitalListOpd?.length != 0 ? (
+        {hospitalListOpd?.length != 0 && hospitalListOpd !== undefined ? (
           hospitalListOpd?.map((u, i) => {
             return (
               // u.name != userData?.Hospital_name ? (
@@ -201,8 +201,8 @@ const Current = ({route}) => {
               alignSelf: 'center',
               textAlign: 'center',
             }}>
-            No records uploaded. Please connect with the health care provider
-            for your records.
+            No records found. {'\n'}Contact your health care provider for
+            details.
           </Text>
         )}
       </ScrollView>

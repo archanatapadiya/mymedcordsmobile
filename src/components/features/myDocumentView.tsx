@@ -10,6 +10,7 @@ import {
   Linking,
   ImageBackground,
   Alert,
+  Button,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -27,6 +28,8 @@ import CallHospital from '../callHosp';
 import {DataTable, IconButton} from 'react-native-paper';
 import PageLogo from '../pageLogo';
 import {useIsFocused} from '@react-navigation/native';
+import moment from 'moment';
+import Modal from 'react-native-modal';
 
 interface ReportData {
   descreption: string;
@@ -40,6 +43,46 @@ const Reports = ({route}) => {
   const {type, hospName, logo, hospitalId, phoneNumber} = route.params;
 
   const isFocused = useIsFocused();
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalText, setModalText] = useState(false);
+  const [modalTime, setModalTime] = useState('');
+
+  const [fileName, setFileName] = useState('');
+  const [uploadDate, setUploadDate] = useState('');
+  const [reportDate, setReportDate] = useState('');
+  const [doctor, setDoctor] = useState('');
+  const [health, setHealth] = useState('');
+  const [desc, setDesc] = useState('');
+  const [fileUrl, setFileUrl] = useState('');
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const openFile = () => {
+    setModalVisible(!isModalVisible);
+    Linking.openURL(fileUrl);
+  };
+
+  const toggleModal1 = (
+    fileName1: any,
+    uploadDate1: any,
+    reportDate1: any,
+    doctor1: any,
+    fileUrl1: any,
+    health1: any,
+    desc1: any,
+  ) => {
+    setModalVisible(true);
+    setFileName(fileName1);
+    setUploadDate(uploadDate1);
+    setReportDate(reportDate1);
+    setDoctor(doctor1);
+    setFileUrl(fileUrl1);
+    setHealth(health1);
+    setDesc(desc1);
+  };
 
   const image = require('./../../assets/logo/background.jpeg');
 
@@ -73,6 +116,8 @@ const Reports = ({route}) => {
     const res = await deleteUserReports(id);
     if (res.is_success) {
       const userReports = await getUserDocuments(loggedInUserId);
+
+      console.log('userReportsuserReports', userReports);
       setUserReportList(userReports?.data?.my_doc);
 
       const space = await checkSpace(loggedInUserId);
@@ -169,10 +214,11 @@ const Reports = ({route}) => {
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         {/* <View /> */}
         {userReportList?.length != 0 && userReportList !== undefined ? (
-          <View style={{paddingLeft: 5, paddingRight: 5}}>
-            <ScrollView horizontal>
+          <View style={{paddingLeft: 3, paddingRight: 3}}>
+            <ScrollView>
               <DataTable
                 style={{
+                  width: '100%',
                   borderWidth: 2,
                   borderColor: '#0A4A6B',
                 }}>
@@ -183,9 +229,24 @@ const Reports = ({route}) => {
                     borderBottomWidth: 2,
                     backgroundColor: '#C7E7F8',
                   }}>
-                  <DataTable.Title
+                  {/* <DataTable.Title
                     style={{
                       width: 80,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
+                      }}>
+                      Date
+                    </Text>
+                  </DataTable.Title> */}
+
+                  <DataTable.Title
+                    style={{
+                      // width: 80,
+                      flex: 1.2,
                     }}>
                     <Text
                       style={{
@@ -199,7 +260,8 @@ const Reports = ({route}) => {
 
                   <DataTable.Title
                     style={{
-                      width: 70,
+                      // width: 150,
+                      flex: 2,
                     }}>
                     <Text
                       style={{
@@ -207,39 +269,36 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      {' '}
-                      Doctor{' '}
+                      {'    '}
+                      Doctor
+                    </Text>
+                  </DataTable.Title>
+
+                  <DataTable.Title
+                    style={{
+                      // width: 80,
+                      flex: 2,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
+                      }}>
+                      {'   '}
+                      Description
                     </Text>
                   </DataTable.Title>
                   <DataTable.Title
                     style={{
-                      width: 80,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: '#228EC7',
-                      }}>
-                      Report Date
-                    </Text>
-                  </DataTable.Title>
-                  <DataTable.Title
-                    style={{
-                      width: 80,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: '#228EC7',
-                      }}>
-                      Reports{' '}
-                    </Text>
-                  </DataTable.Title>
+                      width: 20,
+                    }}
+                  />
                 </DataTable.Header>
 
                 {userReportList?.map((u, i) => {
+                  let testDate1 = moment(u.testdate).format('DD/MM/YY');
+
                   return (
                     <View key={i}>
                       <DataTable.Row
@@ -248,45 +307,144 @@ const Reports = ({route}) => {
                           // paddingRight: 30,
                           backgroundColor: '#67C2F1',
                         }}>
-                        <DataTable.Cell
+                        {/* <DataTable.Cell
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
                             width: 90,
-                            padding: 5,
+                            // padding: 5,
                           }}>
-                          {u.event_time}
+                          {event_time1}
+                        </DataTable.Cell> */}
+
+                        <DataTable.Cell
+                          style={{
+                            borderRightWidth: 2,
+                            borderColor: '#0A4A6B',
+                            // width: 70,
+                            // padding: 3,
+                            flex: 1.2,
+                          }}>
+                          {testDate1}
                         </DataTable.Cell>
 
                         <DataTable.Cell
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 80,
-                            padding: 5,
+                            // width: 150,
+                            flex: 2,
+                            padding: 3,
                           }}>
                           {u.dr_name}
                         </DataTable.Cell>
-                        <DataTable.Cell
-                          style={{
-                            borderRightWidth: 2,
-                            borderColor: '#0A4A6B',
-                            width: 90,
-                            padding: 5,
-                          }}>
-                          {u.testdate}
-                        </DataTable.Cell>
 
                         <DataTable.Cell
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 60,
-                            padding: 5,
+                            flex: 2,
+                            // width: 105,
+                            padding: 3,
                           }}>
                           <Text
                             style={{color: 'blue'}}
-                            onPress={() => Linking.openURL(u.file_url)}>
+                            onPress={() =>
+                              toggleModal1(
+                                u.file_name,
+                                u.event_time,
+                                u.testdate,
+                                u.dr_name,
+                                u.file_url,
+                                u.health_center,
+                                u.description,
+                              )
+                            }
+                            // onPress={() => Linking.openURL(u.file_url)}>
+                          >
+                            <Modal isVisible={isModalVisible}>
+                              <View style={{flex: 1, marginTop: '50%'}}>
+                                <View style={{backgroundColor: '#0099ff'}}>
+                                  <MaterialCommunityIcons
+                                    onPress={toggleModal}
+                                    name="close"
+                                    color="red"
+                                    size={30}
+                                    style={{
+                                      textAlign: 'right',
+                                    }}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontWeight: 'bold',
+                                      fontSize: 24,
+                                      textDecorationLine: 'underline',
+                                      textAlign: 'center',
+                                      color: '#D3ECF9',
+                                    }}>
+                                    File Details
+                                  </Text>
+
+                                  <Text
+                                    style={{fontSize: 22, color: '#D3ECF9'}}>
+                                    {'\n'}{' '}
+                                    <Text style={{fontWeight: 'bold'}}>
+                                      Type / Modality:
+                                    </Text>{' '}
+                                    {fileName} {'\n'}
+                                    <Text style={{fontWeight: 'bold'}}>
+                                      {' '}
+                                      Doctor:{' '}
+                                    </Text>{' '}
+                                    {doctor}
+                                    {'\n'}
+                                    <Text style={{fontWeight: 'bold'}}>
+                                      {' '}
+                                      Health Center:{' '}
+                                    </Text>{' '}
+                                    {health}
+                                    {'\n'}
+                                    <Text style={{fontWeight: 'bold'}}>
+                                      {' '}
+                                      Description:{' '}
+                                    </Text>{' '}
+                                    {desc}
+                                    {'\n'}
+                                    <Text style={{fontWeight: 'bold'}}>
+                                      {' '}
+                                      Upload Date:
+                                    </Text>{' '}
+                                    {uploadDate}
+                                    {'\n'}
+                                    <Text style={{fontWeight: 'bold'}}>
+                                      {' '}
+                                      Report Date:
+                                    </Text>{' '}
+                                    {reportDate}
+                                    {'\n'}
+                                  </Text>
+
+                                  {/* <Button
+                                    title="->"
+                                    onPress={() => Linking.openURL(fileUrl)}
+                                  /> */}
+
+                                  <MaterialCommunityIcons
+                                    // onPress={() => Linking.openURL(fileUrl)}
+                                    onPress={openFile}
+                                    name="arrow-right-circle"
+                                    color="#D3ECF9"
+                                    size={50}
+                                    style={{
+                                      alignItems: 'center',
+                                      alignSelf: 'center',
+                                      alignContent: 'center',
+                                    }}
+                                  />
+                                  <Text>{'\n'}</Text>
+                                </View>
+                              </View>
+                            </Modal>
                             {u.file_name}
                           </Text>
                         </DataTable.Cell>

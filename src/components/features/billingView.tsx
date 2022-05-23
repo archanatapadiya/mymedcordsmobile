@@ -160,7 +160,7 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      File Name
+                      Type / Modality
                     </Text>
                   </DataTable.Title>
 
@@ -310,7 +310,7 @@ const Reports = ({route}) => {
                           fontWeight: 'bold',
                           color: '#228EC7',
                         }}>
-                        File Name
+                        Type / Modality
                       </Text>
                     </DataTable.Title>
 
@@ -447,7 +447,7 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      File Name
+                      Type / Modality
                     </Text>
                   </DataTable.Title>
 

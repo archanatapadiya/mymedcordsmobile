@@ -19,6 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CallHospital from '../callHosp';
 import {DataTable} from 'react-native-paper';
 import PageLogo from '../pageLogo';
+import moment from 'moment';
 
 interface ReportData {
   descreption: string;
@@ -150,8 +151,8 @@ const Reports = ({route}) => {
 
         <View />
         {userReportList?.length != 0 && userReportList !== undefined ? (
-          <View style={{paddingLeft: 20, paddingRight: 20}}>
-            <ScrollView horizontal>
+          <View style={{paddingLeft: 2, paddingRight: 2}}>
+            <ScrollView>
               <DataTable
                 style={{
                   borderWidth: 2,
@@ -164,9 +165,25 @@ const Reports = ({route}) => {
                     borderBottomWidth: 2,
                     backgroundColor: '#C7E7F8',
                   }}>
+                  {/* <DataTable.Title
+                    style={{
+                      width: 80,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: '#228EC7',
+                      }}>
+                      Date
+                    </Text>
+                  </DataTable.Title> */}
+
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1,
+                      // paddingLeft: 20,
                     }}>
                     <Text
                       style={{
@@ -180,8 +197,9 @@ const Reports = ({route}) => {
 
                   <DataTable.Title
                     style={{
-                      width: 100,
-                      paddingLeft: 20,
+                      // width: 100,
+                      flex: 1.5,
+                      // paddingLeft: 20,
                     }}>
                     <Text
                       style={{
@@ -189,13 +207,14 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      Doctor{' '}
+                      {'  '}Doctor
                     </Text>
                   </DataTable.Title>
                   <DataTable.Title
                     style={{
-                      width: 100,
-                      paddingLeft: 20,
+                      // width: 100,
+                      flex: 1.5,
+                      // paddingLeft: 20,
                     }}>
                     <Text
                       style={{
@@ -203,13 +222,15 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      Report Date
+                      Description
                     </Text>
                   </DataTable.Title>
+
                   <DataTable.Title
-                    numeric
+                    // numeric
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1,
                     }}>
                     <Text
                       style={{
@@ -223,6 +244,9 @@ const Reports = ({route}) => {
                 </DataTable.Header>
 
                 {userReportList?.map((u, i) => {
+                  let testDate1 = moment(u.testdate).format('DD/MM/YY');
+                  let eventTime = moment(u.event_time).format('DD/MM/YY');
+
                   return (
                     <View key={i}>
                       <DataTable.Row
@@ -231,42 +255,56 @@ const Reports = ({route}) => {
                           // paddingRight: 30,
                           backgroundColor: '#67C2F1',
                         }}>
+                        {/* <DataTable.Cell
+                          style={{
+                            borderRightWidth: 2,
+                            borderColor: '#0A4A6B',
+                            width: 100,
+                            padding: 2,
+                          }}>
+                          {eventTime}
+                        </DataTable.Cell> */}
+
                         <DataTable.Cell
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 100,
+                            flex: 1,
+                            padding: 3,
                           }}>
-                          {u.event_time}
+                          {testDate1}
                         </DataTable.Cell>
 
                         <DataTable.Cell
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 180,
+                            flex: 1.5,
+                            padding: 3,
                           }}>
                           {u.dr_name}
                         </DataTable.Cell>
+
                         <DataTable.Cell
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 180,
+                            flex: 1.5,
+                            padding: 3,
                           }}>
-                          {u.testdate}
+                          {u.description}
                         </DataTable.Cell>
 
                         <DataTable.Cell
-                          numeric
                           style={{
                             // borderRightWidth: 2,
                             // borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1,
+                            padding: 3,
                           }}>
                           <Text
                             style={{color: 'blue'}}

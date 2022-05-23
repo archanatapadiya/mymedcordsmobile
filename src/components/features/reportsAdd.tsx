@@ -207,7 +207,7 @@ const Reports = ({route}) => {
                       color: '#D3ECF9',
                       marginTop: 10,
                     }}>
-                    File Name
+                    Type / Modality
                   </Text>
                   <TextInput
                     style={styles.input}

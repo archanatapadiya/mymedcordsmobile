@@ -26,8 +26,8 @@ export default function UploadImage(params: any) {
 
   const captureImage = async () => {
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
+      width: 1000,
+      height: 800,
       cropping: true,
     }).then(image => {
       params.setSingleFile(image);
@@ -49,12 +49,12 @@ export default function UploadImage(params: any) {
 
       //Setting the state to show single file attributes
       {
-        res[0]?.size < 5000000 && params.setSingleFile(res);
+        res[0]?.size < 1000000 && params.setSingleFile(res);
       }
       {
-        res[0]?.size > 5000000 &&
+        res[0]?.size > 1000000 &&
           alert(
-            `Max file size exceeded (5 MB). 
+            `Max file size exceeded (1 MB). 
 Your file size is` +
               (Math.round((res[0]?.size / 1000000) * 100) / 100).toFixed(2) +
               ' MB',

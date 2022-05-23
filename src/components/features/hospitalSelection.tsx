@@ -44,6 +44,7 @@ const Current = ({route}) => {
   const [hospitalListOpd, setHospitalListOpd] = useState<HospitalData[]>();
   const [hospitalListIpd, setHospitalListIpd] = useState<HospitalData[]>();
 
+  console.log('hospitalListIpdhospitalListIpd', hospitalListIpd);
   const image = require('./../../assets/logo/background.jpeg');
   let hospitalListData: any = [];
 
@@ -101,8 +102,9 @@ const Current = ({route}) => {
       </View>
 
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {hospitalListIpd?.filter(name => name.hospital_type != 1).length !=
-        0 ? (
+        {hospitalListIpd?.filter(name => name.hospital_type != 1).length != 0 &&
+        hospitalListIpd?.filter(name => name.hospital_type != 1).length !==
+          undefined ? (
           hospitalListIpd
             ?.filter(name => name.hospital_type != 1)
             .map((u, i) => {
@@ -208,8 +210,8 @@ const Current = ({route}) => {
               alignSelf: 'center',
               textAlign: 'center',
             }}>
-            No records uploaded. Please connect with the health care provider
-            for your records.
+            No records found. {'\n'}Contact your health care provider for
+            details.
           </Text>
         )}
       </ScrollView>
