@@ -26,8 +26,8 @@ export default function UploadImage(params: any) {
 
   const captureImage = async () => {
     ImagePicker.openCamera({
-      width: 1000,
-      height: 800,
+      width: 800,
+      height: 1200,
       cropping: true,
     }).then(image => {
       params.setSingleFile(image);

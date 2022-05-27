@@ -16,11 +16,24 @@ import axios from 'axios';
 import {Button, Snackbar} from 'react-native-paper';
 import Styles from './login/styles';
 import DocumentPicker from 'react-native-document-picker';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Colors} from 'react-native-paper';
 
 export default function UploadImage(params: any) {
   console.log('params in uploadreport-->', params);
 
   const userId = params?.userData?.user_id;
+
+  const captureImage = async () => {
+    ImagePicker.openCamera({
+      width: 800,
+      height: 1200,
+      cropping: true,
+    }).then(image => {
+      params.setSingleFile(image);
+      console.log('image captured', image);
+    });
+  };
 
   const addImage = async () => {
     try {
@@ -41,7 +54,7 @@ export default function UploadImage(params: any) {
       {
         res[0]?.size > 500000 &&
           alert(
-            `Max file size exceeded (100 KB). 
+            `Max file size exceeded (500 KB). 
 Your file size is` +
               (Math.round((res[0]?.size / 1000) * 100) / 100).toFixed(2) +
               ' KB',
@@ -63,14 +76,36 @@ Your file size is` +
   return (
     <View>
       <View>
-        <Button
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <MaterialCommunityIcons
+            onPress={captureImage}
+            name="camera"
+            color={Colors.white}
+            size={40}
+            style={{marginLeft: 10, marginTop: 20, marginRight: 20}}
+          />
+          <Button
+            color="#fff"
+            onPress={addImage}
+            mode="contained"
+            labelStyle={Styles.nextButtonText1}
+            style={Styles.nextButtonContainer1}>
+            {'  '}Select a file to upload{'  '}
+          </Button>
+        </View>
+
+        {/* <Button
           color="#fff"
           onPress={addImage}
           mode="contained"
           labelStyle={Styles.nextButtonText1}
           style={Styles.nextButtonContainer1}>
           {'  '}Select a file to upload{'  '}
-        </Button>
+        </Button> */}
         <Text style={Styles.nextButtonText1}>{params.singleFile[0]?.name}</Text>
         {params.singleFile[0]?.size && (
           <Text style={Styles.nextButtonText1}>

@@ -96,6 +96,9 @@ const Reports = ({route}) => {
     console.log('valuesim handle submit add report ', values);
     let is_user_upload = false;
 
+    let singleFileToPass = singleFile[0] ? singleFile[0] : singleFile;
+
+    console.log('singleFile in report add', singleFile);
     const reportupload = await addUserReports(
       values,
       input2,
@@ -104,7 +107,7 @@ const Reports = ({route}) => {
       searchedUserId,
       loggedInHospType,
       is_user_upload,
-      singleFile[0],
+      singleFileToPass,
     );
     if (reportupload?.ok) {
       navigate(ScreenNames.PatientDetailsScreen);

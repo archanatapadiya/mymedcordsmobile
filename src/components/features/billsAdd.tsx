@@ -91,6 +91,8 @@ const Reports = ({route}) => {
   };
 
   const handleSubmitUpload = async (values: any) => {
+    let singleFileToPass = singleFile[0] ? singleFile[0] : singleFile;
+
     const reportupload = await addUserBills(
       values,
       input2,
@@ -98,7 +100,7 @@ const Reports = ({route}) => {
       fileValue,
       searchedUserId,
       loggedInHospType,
-      singleFile[0],
+      singleFileToPass,
     );
     if (reportupload?.ok) {
       navigate(ScreenNames.PatientDetailsScreen);

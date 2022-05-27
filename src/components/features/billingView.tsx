@@ -25,6 +25,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CallHospital from '../callHosp';
 import {DataTable, IconButton} from 'react-native-paper';
 import PageLogo from '../pageLogo';
+import moment from 'moment';
 
 interface ReportData {
   descreption: string;
@@ -136,8 +137,8 @@ const Reports = ({route}) => {
 
         <View />
         {userReportListOPD?.length != 0 && userReportListOPD !== undefined ? (
-          <View style={{paddingLeft: 20, paddingRight: 20}}>
-            <ScrollView horizontal>
+          <View style={{paddingLeft: 2, paddingRight: 2}}>
+            <ScrollView>
               <DataTable
                 style={{
                   borderWidth: 2,
@@ -152,7 +153,8 @@ const Reports = ({route}) => {
                   }}>
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1,
                     }}>
                     <Text
                       style={{
@@ -160,13 +162,14 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      Type / Modality
+                      Type
                     </Text>
                   </DataTable.Title>
 
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1.5,
                     }}>
                     <Text
                       style={{
@@ -174,13 +177,15 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      Remarks{' '}
+                      {'    '}
+                      Remarks
                     </Text>
                   </DataTable.Title>
 
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1,
                     }}>
                     <Text
                       style={{
@@ -191,9 +196,17 @@ const Reports = ({route}) => {
                       Upload Date
                     </Text>
                   </DataTable.Title>
+                  <DataTable.Title
+                    style={{
+                      // width: 20,
+                      flex: 0.7,
+                    }}
+                  />
                 </DataTable.Header>
 
                 {userReportListOPD?.map((u, i) => {
+                  let testDate1 = moment(u.billing_time).format('DD/MM/YY');
+
                   return (
                     <View key={i}>
                       <DataTable.Row
@@ -207,8 +220,9 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1,
+                            padding: 3,
                           }}>
                           {u.bill_file_name}
                         </DataTable.Cell>
@@ -217,8 +231,9 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1.5,
+                            padding: 3,
                           }}>
                           {u.remark}
                         </DataTable.Cell>
@@ -226,13 +241,14 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1,
+                            padding: 3,
                           }}>
-                          {u.billing_time}
+                          {testDate1}
                         </DataTable.Cell>
 
-                        <DataTable.Cell>
+                        <DataTable.Cell style={{flex: 0.7}}>
                           <View>
                             <IconButton
                               icon="delete"
@@ -286,8 +302,8 @@ const Reports = ({route}) => {
         {userDetails?.is_admit &&
           (userReportListCurrent?.length != 0 &&
           userReportListCurrent !== undefined ? (
-            <View style={{paddingLeft: 20, paddingRight: 20}}>
-              <ScrollView horizontal>
+            <View style={{paddingLeft: 2, paddingRight: 2}}>
+              <ScrollView>
                 <DataTable
                   style={{
                     borderWidth: 2,
@@ -302,7 +318,7 @@ const Reports = ({route}) => {
                     }}>
                     <DataTable.Title
                       style={{
-                        width: 100,
+                        flex: 1, // width: 100,
                       }}>
                       <Text
                         style={{
@@ -310,13 +326,14 @@ const Reports = ({route}) => {
                           fontWeight: 'bold',
                           color: '#228EC7',
                         }}>
-                        Type / Modality
+                        Type
                       </Text>
                     </DataTable.Title>
 
                     <DataTable.Title
                       style={{
-                        width: 100,
+                        // width: 100,
+                        flex: 1.5,
                       }}>
                       <Text
                         style={{
@@ -324,13 +341,14 @@ const Reports = ({route}) => {
                           fontWeight: 'bold',
                           color: '#228EC7',
                         }}>
-                        Remarks{' '}
+                        {'    '}Remarks
                       </Text>
                     </DataTable.Title>
 
                     <DataTable.Title
                       style={{
-                        width: 100,
+                        // width: 100,
+                        flex: 1,
                       }}>
                       <Text
                         style={{
@@ -341,9 +359,17 @@ const Reports = ({route}) => {
                         Upload Date
                       </Text>
                     </DataTable.Title>
+                    <DataTable.Title
+                      style={{
+                        // width: 20,
+                        flex: 0.7,
+                      }}
+                    />
                   </DataTable.Header>
 
                   {userReportListCurrent?.map((u, i) => {
+                    let testDate1 = moment(u.billing_time).format('DD/MM/YY');
+
                     return (
                       <View key={i}>
                         <DataTable.Row
@@ -357,8 +383,9 @@ const Reports = ({route}) => {
                             style={{
                               borderRightWidth: 2,
                               borderColor: '#0A4A6B',
-                              width: 150,
-                              padding: 20,
+                              // width: 150,
+                              flex: 1,
+                              padding: 3,
                             }}>
                             {u.bill_file_name}
                           </DataTable.Cell>
@@ -367,8 +394,9 @@ const Reports = ({route}) => {
                             style={{
                               borderRightWidth: 2,
                               borderColor: '#0A4A6B',
-                              width: 150,
-                              padding: 20,
+                              // width: 150,
+                              flex: 1.5,
+                              padding: 3,
                             }}>
                             {u.remark}
                           </DataTable.Cell>
@@ -376,12 +404,13 @@ const Reports = ({route}) => {
                             style={{
                               borderRightWidth: 2,
                               borderColor: '#0A4A6B',
-                              width: 150,
-                              padding: 20,
+                              // width: 150,
+                              flex: 1,
+                              padding: 3,
                             }}>
-                            {u.billing_time}
+                            {testDate1}
                           </DataTable.Cell>
-                          <DataTable.Cell>
+                          <DataTable.Cell style={{flex: 0.7}}>
                             <View>
                               <IconButton
                                 icon="delete"
@@ -423,8 +452,8 @@ const Reports = ({route}) => {
 
         {userReportListHistory?.length != 0 &&
         userReportListHistory !== undefined ? (
-          <View style={{paddingLeft: 20, paddingRight: 20}}>
-            <ScrollView horizontal>
+          <View style={{paddingLeft: 2, paddingRight: 2}}>
+            <ScrollView>
               <DataTable
                 style={{
                   borderWidth: 2,
@@ -439,7 +468,8 @@ const Reports = ({route}) => {
                   }}>
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1,
                     }}>
                     <Text
                       style={{
@@ -447,13 +477,14 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      Type / Modality
+                      Type
                     </Text>
                   </DataTable.Title>
 
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1.5,
                     }}>
                     <Text
                       style={{
@@ -461,13 +492,14 @@ const Reports = ({route}) => {
                         fontWeight: 'bold',
                         color: '#228EC7',
                       }}>
-                      Remarks{' '}
+                      {'   '}Remarks
                     </Text>
                   </DataTable.Title>
 
                   <DataTable.Title
                     style={{
-                      width: 100,
+                      // width: 100,
+                      flex: 1,
                     }}>
                     <Text
                       style={{
@@ -478,9 +510,17 @@ const Reports = ({route}) => {
                       Upload Date
                     </Text>
                   </DataTable.Title>
+                  <DataTable.Title
+                    style={{
+                      // width: 20,
+                      flex: 0.7,
+                    }}
+                  />
                 </DataTable.Header>
 
                 {userReportListHistory?.map((u, i) => {
+                  let testDate1 = moment(u.billing_time).format('DD/MM/YY');
+
                   return (
                     <View key={i}>
                       <DataTable.Row
@@ -494,8 +534,9 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1,
+                            padding: 3,
                           }}>
                           {u.bill_file_name}
                         </DataTable.Cell>
@@ -504,8 +545,9 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1.5,
+                            padding: 3,
                           }}>
                           {u.remark}
                         </DataTable.Cell>
@@ -513,12 +555,13 @@ const Reports = ({route}) => {
                           style={{
                             borderRightWidth: 2,
                             borderColor: '#0A4A6B',
-                            width: 150,
-                            padding: 20,
+                            // width: 150,
+                            flex: 1,
+                            padding: 3,
                           }}>
-                          {u.billing_time}
+                          {testDate1}
                         </DataTable.Cell>
-                        <DataTable.Cell>
+                        <DataTable.Cell style={{flex: 0.7}}>
                           <View>
                             <IconButton
                               icon="delete"
