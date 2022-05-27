@@ -224,7 +224,11 @@ const Reports = ({route}) => {
                             flex: 1,
                             padding: 3,
                           }}>
-                          {u.bill_file_name}
+                          <Text
+                            style={{color: 'blue'}}
+                            onPress={() => Linking.openURL(u.file_url)}>
+                            {u.bill_file_name}
+                          </Text>
                         </DataTable.Cell>
 
                         <DataTable.Cell
@@ -387,7 +391,11 @@ const Reports = ({route}) => {
                               flex: 1,
                               padding: 3,
                             }}>
-                            {u.bill_file_name}
+                            <Text
+                              style={{color: 'blue'}}
+                              onPress={() => Linking.openURL(u.file_url)}>
+                              {u.bill_file_name}
+                            </Text>
                           </DataTable.Cell>
 
                           <DataTable.Cell
@@ -538,7 +546,11 @@ const Reports = ({route}) => {
                             flex: 1,
                             padding: 3,
                           }}>
-                          {u.bill_file_name}
+                          <Text
+                            style={{color: 'blue'}}
+                            onPress={() => Linking.openURL(u.file_url)}>
+                            {u.bill_file_name}
+                          </Text>
                         </DataTable.Cell>
 
                         <DataTable.Cell
