@@ -38,7 +38,7 @@ export const ScreenNames = {
 }
 
 export const API = {
-  SERVER_URL: 'http://3.110.35.199/',
+  SERVER_URL: 'http://3.109.71.28/',
   CONTENT_TYPE: 'application/json',
 }
 
