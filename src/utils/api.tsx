@@ -215,7 +215,7 @@ export const uploadImage = async (params: any) => {
   form.append('health_id', params?.userData?.health_id);
 
   console.log('image in form', params, form);
-  const res = fetch('http://3.109.71.28/update_user_profile/', {
+  const res = fetch('http://3.110.35.199/update_user_profile/', {
     body: form,
     method: 'POST',
     headers: {
@@ -549,7 +549,7 @@ export const addUserReports = async (
   form_data.append('is_user_upload', is_user_upload);
 
   console.log('form_data in my doc upload', form_data);
-  const res = await fetch('http://3.109.71.28/report_upload/', {
+  const res = await fetch('http://3.110.35.199/report_upload/', {
     body: form_data,
     method: 'POST',
     headers: {
@@ -598,7 +598,7 @@ export const addUserUpdates = async (
   form_data.append('dr_name', values.doctor);
   form_data.append('is_opd', opdFlag);
 
-  const res = await fetch('http://3.109.71.28/user_health_update/', {
+  const res = await fetch('http://3.110.35.199/user_health_update/', {
     body: form_data,
     method: 'POST',
     headers: {
@@ -655,7 +655,7 @@ export const addUserBills = async (
   form_data.append('hospital_id', loggedInUserId);
   form_data.append('is_opd', opdFlag);
 
-  const res = await fetch('http://3.109.71.28/bill_upload/', {
+  const res = await fetch('http://3.110.35.199/bill_upload/', {
     body: form_data,
     method: 'POST',
     headers: {
